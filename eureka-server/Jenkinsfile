@@ -31,7 +31,7 @@ pipeline {
             steps {
                 //sh './gradlew build'
                  //执行shell命令
-                 sh 'mvn -f ${SVN_FOLD}/pom.xml clean scala:compile compile package -DskipTests=true'
+                 sh 'mvn -f ${SVN_FOLD}/pom.xml clean compile package -DskipTests=true'
                  sh 'mvn -f ${SVN_FOLD}/pom.xml clean package'
             }
         }
