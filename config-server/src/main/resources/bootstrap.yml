@@ -1,0 +1,57 @@
+spring:
+  application:
+    name: config-server
+  security:
+    user:
+      name: user
+      password: 123456
+  cloud:
+    config:
+      server:
+        git:
+          uri: https://github.com/hengzhangdashuaibi/spring-cloud-config
+          search-paths: /service-* # git仓库地址下的相对地址，可以配置多个，用,分割。
+          default-label: master
+          force-pull: true
+          username: 18217428005
+          password: woainiZHANG520
+#    bus:
+#      trace:
+#        enabled: true
+#  rabbitmq:
+#    host: 10.2.159.70
+#    port: 5672
+#    username: guest
+#    password: guest
+#    virtual-host: /
+---
+spring:
+#  profiles: pro
+  boot:
+    admin:
+      client:
+        url: http://127.0.0.1:7086
+eureka:
+  client:
+    service-url:
+      default-zone: http://127.0.0.1:8761/eureka/
+---
+#spring:
+#  profiles: sh-pro
+#  boot:
+#    admin:
+#      client:
+#        url: http://127.0.0.1:7086
+#eureka:
+#  client:
+#    service-url:
+#      defaultZone: http://10.2.159.112:8761/eureka/
+
+#management:
+#  endpoint:
+#    bus-refresh:
+#      enabled: true
+#  endpoints:
+#    web:
+#      exposure:
+#        include: refresh,bus-refresh

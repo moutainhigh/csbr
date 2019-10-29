@@ -1,0 +1,28 @@
+spring:
+  cloud:
+    config:
+      uri: http://user:123456@127.0.0.1:8888/
+      profile: dev
+      label: master
+#---
+#spring:
+#  cloud:
+#    config:
+#      uri: http://user:123456@127.0.0.1:8888/
+#      profile: pro
+#      label: master
+#  boot:
+#    admin:
+#      client:
+#        url: http://127.0.0.1:7086
+#---
+#spring:
+#  cloud:
+#    config:
+#      uri: http://user:123456@127.0.0.1:8888/
+#      profile: sh-pro
+#      label: master
+#  boot:
+#    admin:
+#      client:
+#        url: http://127.0.0.1:7086

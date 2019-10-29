@@ -1,0 +1,26 @@
+spring:
+  application:
+    name: zuul-server
+  cloud:
+    config:
+      uri: http://user:123456@localhost:8888/
+      profile: dev
+      label: master
+  boot:
+    admin:
+      client:
+        url: http://127.0.0.1:7086
+##admin监控配置
+management:
+  metrics:
+    web:
+      server:
+        auto-time-requests: false
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+  endpoint:
+    health:
+      show-details: always
+
