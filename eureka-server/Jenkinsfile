@@ -31,8 +31,8 @@ pipeline {
             steps {
                 //sh './gradlew build'
                  //执行shell命令
-                 sh 'mvn -f $SVN_FOLD/pom.xml clean scala:compile compile package -DskipTests=true'
-                 sh 'mvn -f $SVN_FOLD/pom.xml clean package'
+                 sh 'mvn -f ${SVN_FOLD}/pom.xml clean scala:compile compile package -DskipTests=true'
+                 sh 'mvn -f ${SVN_FOLD}/pom.xml clean package'
             }
         }
         //测试(暂时不用)
@@ -78,7 +78,7 @@ pipeline {
     post {
         always {
             echo 'Archive artifacts'
-            archiveArtifacts artifacts: "$SVN_FOLD/target/*.jar", excludes: "project/${PROJECT_NAME}/target"
+            archiveArtifacts artifacts: "${SVN_FOLD}/target/*.jar", excludes: "${SVN_FOLD}/target"
         }
     }
 
