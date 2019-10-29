@@ -39,7 +39,7 @@ pipeline {
         //stage('Test') {
             //steps {
                 //sh './gradlew check'
-                sh 'mvn -f $SVN_FOLD/pom.xml test'
+                //sh 'mvn -f $SVN_FOLD/pom.xml test'
                 //sh 'mvn -f $SVN_FOLD/pom.xml test'
             //}
         //}
