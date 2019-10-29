@@ -36,13 +36,13 @@ pipeline {
             }
         }
         //测试(暂时不用)
-        stage('Test') {
-            steps {
+        //stage('Test') {
+            //steps {
                 //sh './gradlew check'
                 sh 'mvn -f $SVN_FOLD/pom.xml test'
                 //sh 'mvn -f $SVN_FOLD/pom.xml test'
-            }
-        }
+            //}
+        //}
         //部署
         stage('Deploy') {
             steps {
