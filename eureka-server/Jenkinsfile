@@ -13,6 +13,12 @@ pipeline {
         def SRCCODE_DIR = "/var/jenkins_home/workspace/${env.JOB_NAME}"
         def DAILYCI_DIR = "/var/ciOutput/dailyCiOutput"
         def SVN_FOLD = "eureka-server"
+        //构建maven项目定义
+            def compileAllFiles(){
+                //执行shell命令
+                sh 'mvn -f $SVN_FOLD/${PROJECT_NAME}/pom.xml clean scala:compile compile package -DskipTests=true'
+                sh 'mvn -f $SVN_FOLD/pom.xml clean package'
+            }
     }
     //定时任务
     //triggers { pollSCM('H 4/* 0 0 1-5') }
@@ -80,10 +86,5 @@ pipeline {
         }
     }
 
-    //构建maven项目定义
-    def compileAllFiles(){
-        //执行shell命令
-        sh 'mvn -f $SVN_FOLD/${PROJECT_NAME}/pom.xml clean scala:compile compile package -DskipTests=true'
-        sh 'mvn -f $SVN_FOLD/pom.xml clean package'
-    }
+
 }
