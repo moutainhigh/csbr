@@ -1,12 +1,12 @@
 pipeline {
-    //agent any
+    agent any
     //maven代理（直接从官网拉取maven镜像）
-    agent {
-        docker {
-            image 'maven:3-alpine'
-            args '-v /root/.m2:/root/.m2'
-        }
-    }
+    //agent {
+        //docker {
+            //image 'maven:3-alpine'
+            //args '-v /root/.m2:/root/.m2'
+        //}
+    //}
     //环境定义
     environment{
 
@@ -39,8 +39,8 @@ pipeline {
         //stage('Test') {
             //steps {
                 //sh './gradlew check'
-                //sh 'mvn -f $SVN_FOLD/pom.xml test'
-                //sh 'mvn -f $SVN_FOLD/pom.xml test'
+                //sh 'mvn -f ${SVN_FOLD}/pom.xml test'
+                //sh 'mvn -f ${SVN_FOLD}/pom.xml test'
             //}
         //}
         //部署
@@ -51,22 +51,22 @@ pipeline {
                 script{
                     if(env.BRANCH_NAME=='develop'){
                         //develop分支环境
-                        echo 'start to deploy $SVN_FOLD on develop ...'
+                        echo 'start to deploy ${SVN_FOLD} on develop ...'
                         //调用Publish Over SSH插件，上传docker-compose.yaml文件并且执行deploy脚本
                         sshPublisher(publishers: [sshPublisherDesc(configName: 'csbr', transfers: [sshTransfer(cleanRemote: false, excludes: '', execCommand: 'sh /home/eureka-server/developbuild.sh', execTimeout: 120000, flatten: false, makeEmptyDirs: false, noDefaultExcludes: false, patternSeparator: '[, ]+', remoteDirectory: '/home/csbr/data', remoteDirectorySDF: false, removePrefix: '', sourceFiles: 'output/*.*')], usePromotionTimestamp: false, useWorkspaceInPromotion: false, verbose: false)])
-                        echo 'Depoly $SVN_FOLD success ...'
+                        echo 'Depoly ${SVN_FOLD} success ...'
                     }else if(env.BRANCH_NAME=='release'){
                         //release分支环境
-                        echo 'start to deploy $SVN_FOLD on release ...'
+                        echo 'start to deploy ${SVN_FOLD} on release ...'
                         //调用Publish Over SSH插件，上传docker-compose.yaml文件并且执行deploy脚本
                         sshPublisher(publishers: [sshPublisherDesc(configName: 'csbr', transfers: [sshTransfer(cleanRemote: false, excludes: '', execCommand: 'sh /home/eureka-server/releasebuild.sh', execTimeout: 120000, flatten: false, makeEmptyDirs: false, noDefaultExcludes: false, patternSeparator: '[, ]+', remoteDirectory: '/home/csbr/data', remoteDirectorySDF: false, removePrefix: '', sourceFiles: 'output/*.*')], usePromotionTimestamp: false, useWorkspaceInPromotion: false, verbose: false)])
-                        echo 'Depoly $SVN_FOLD success on release ...'
+                        echo 'Depoly ${SVN_FOLD} success on release ...'
                     }else if(env.BRANCH_NAME=='master'){
                         //master分支
-                        echo 'start to deploy $SVN_FOLD on master...'
+                        echo 'start to deploy ${SVN_FOLD} on master...'
                         //调用Publish Over SSH插件，上传docker-compose.yaml文件并且执行deploy脚本
                         sshPublisher(publishers: [sshPublisherDesc(configName: 'csbr', transfers: [sshTransfer(cleanRemote: false, excludes: '', execCommand: 'sh /home/eureka-server/masterbuild.sh', execTimeout: 120000, flatten: false, makeEmptyDirs: false, noDefaultExcludes: false, patternSeparator: '[, ]+', remoteDirectory: '/home/csbr/data', remoteDirectorySDF: false, removePrefix: '', sourceFiles: 'output/*.*')], usePromotionTimestamp: false, useWorkspaceInPromotion: false, verbose: false)])
-                        echo 'Depoly $SVN_FOLD success on master ...'
+                        echo 'Depoly ${SVN_FOLD} success on master ...'
                     }
                 }
                 //sh './build.sh'
