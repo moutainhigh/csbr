@@ -4,5 +4,7 @@ VOLUME /tmp
 #COPY ${JAR_FILE} mscrm.jar
 #RUN bash -c 'touch /mscrm.jar'
 ADD target/zuul-server.jar zuul-server.jar
-EXPOSE 8085
-ENTRYPOINT ["java","-Djava.security.egd=file:/dev/./urandom","-jar","/zuul-server.jar"]
+ENV CE=$CE
+ENV JAVA_OPTS=$JAVA_OPTS
+EXPOSE 8081
+ENTRYPOINT ["sh", "-c","java $JAVA_OPTS -Djava.security.egd=file:/dev/./urandom -jar /zuul-server.jar --spring.cloud.config.profile=$CE"]

@@ -4,5 +4,7 @@ VOLUME /tmp
 #COPY ${JAR_FILE} mscrm.jar
 #RUN bash -c 'touch /mscrm.jar'
 ADD target/config-server.jar config-server.jar
+ENV CE=$CE
+ENV JAVA_OPTS=$JAVA_OPTS
 EXPOSE 8888
-ENTRYPOINT ["java","-Djava.security.egd=file:/dev/./urandom","-jar","/config-server.jar"]
+ENTRYPOINT ["sh", "-c","java $JAVA_OPTS -Djava.security.egd=file:/dev/./urandom -jar /config-server.jar --spring.cloud.config.profile=$CE"]

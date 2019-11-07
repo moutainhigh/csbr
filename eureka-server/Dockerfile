@@ -4,5 +4,7 @@ VOLUME /tmp
 #COPY ${JAR_FILE} mscrm.jar
 #RUN bash -c 'touch /mscrm.jar'
 ADD target/eureka-server.jar eureka-server.jar
+ENV CE=$CE
+ENV JAVA_OPTS=$JAVA_OPTS
 EXPOSE 8761
-ENTRYPOINT ["java","-Djava.security.egd=file:/dev/./urandom","-jar","/eureka-server.jar"]
+ENTRYPOINT ["sh", "-c","java $JAVA_OPTS -Djava.security.egd=file:/dev/./urandom -jar /eureka-server.jar --spring.profiles.active=$CE"]

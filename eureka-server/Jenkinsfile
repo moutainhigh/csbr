@@ -16,10 +16,10 @@ pipeline {
     }
     //定时任务
     //triggers { pollSCM('H 4/* 0 0 1-5') }
-    triggers {
+    //triggers {
         //每天凌晨2点自动构建
-        cron('H 2 * * *')
-    }
+    //    cron('H 2 * * *')
+    //}
     //全局定义工具
     tools {
         //工具名称必须在Jenkins 管理Jenkins → 全局工具配置中预配置。
@@ -31,7 +31,8 @@ pipeline {
             steps {
                 //sh './gradlew build'
                  //执行shell命令
-                 sh 'mvn -f ${SVN_FOLD}/pom.xml clean package -Dmaven.test.skip=true -X'
+                 sh 'echo ${JAVA_HOMOE}'
+                 sh 'mvn -f ./pom.xml clean package -Dmaven.test.skip=true -X'
                  //sh 'mvn -f ${SVN_FOLD}/pom.xml clean package'
             }
         }
@@ -53,19 +54,19 @@ pipeline {
                         //develop分支环境
                         echo 'start to deploy ${SVN_FOLD} on develop ...'
                         //调用Publish Over SSH插件，上传docker-compose.yaml文件并且执行deploy脚本
-                        sshPublisher(publishers: [sshPublisherDesc(configName: 'csbr', transfers: [sshTransfer(cleanRemote: false, excludes: '', execCommand: 'sh /home/eureka-server/developbuild.sh', execTimeout: 120000, flatten: false, makeEmptyDirs: false, noDefaultExcludes: false, patternSeparator: '[, ]+', remoteDirectory: '/home/csbr/data', remoteDirectorySDF: false, removePrefix: '', sourceFiles: 'output/*.*')], usePromotionTimestamp: false, useWorkspaceInPromotion: false, verbose: false)])
+                        sshPublisher(publishers: [sshPublisherDesc(configName: 'csbr', transfers: [sshTransfer(cleanRemote: false, excludes: '', execCommand: 'sh /mnt/eureka-server/developbuild.sh', execTimeout: 120000, flatten: false, makeEmptyDirs: false, noDefaultExcludes: false, patternSeparator: '[, ]+', remoteDirectory: '/mnt/csbr/data', remoteDirectorySDF: false, removePrefix: '', sourceFiles: 'output/*.*')], usePromotionTimestamp: false, useWorkspaceInPromotion: false, verbose: false)])
                         echo 'Depoly ${SVN_FOLD} success ...'
                     }else if(env.BRANCH_NAME=='release'){
                         //release分支环境
                         echo 'start to deploy ${SVN_FOLD} on release ...'
                         //调用Publish Over SSH插件，上传docker-compose.yaml文件并且执行deploy脚本
-                        sshPublisher(publishers: [sshPublisherDesc(configName: 'csbr', transfers: [sshTransfer(cleanRemote: false, excludes: '', execCommand: 'sh /home/eureka-server/releasebuild.sh', execTimeout: 120000, flatten: false, makeEmptyDirs: false, noDefaultExcludes: false, patternSeparator: '[, ]+', remoteDirectory: '/home/csbr/data', remoteDirectorySDF: false, removePrefix: '', sourceFiles: 'output/*.*')], usePromotionTimestamp: false, useWorkspaceInPromotion: false, verbose: false)])
+                        sshPublisher(publishers: [sshPublisherDesc(configName: 'csbr', transfers: [sshTransfer(cleanRemote: false, excludes: '', execCommand: 'sh /mnt/eureka-server/releasebuild.sh', execTimeout: 120000, flatten: false, makeEmptyDirs: false, noDefaultExcludes: false, patternSeparator: '[, ]+', remoteDirectory: '/mnt/csbr/data', remoteDirectorySDF: false, removePrefix: '', sourceFiles: 'output/*.*')], usePromotionTimestamp: false, useWorkspaceInPromotion: false, verbose: false)])
                         echo 'Depoly ${SVN_FOLD} success on release ...'
                     }else if(env.BRANCH_NAME=='master'){
                         //master分支
                         echo 'start to deploy ${SVN_FOLD} on master...'
                         //调用Publish Over SSH插件，上传docker-compose.yaml文件并且执行deploy脚本
-                        sshPublisher(publishers: [sshPublisherDesc(configName: 'csbr', transfers: [sshTransfer(cleanRemote: false, excludes: '', execCommand: 'sh /home/eureka-server/masterbuild.sh', execTimeout: 120000, flatten: false, makeEmptyDirs: false, noDefaultExcludes: false, patternSeparator: '[, ]+', remoteDirectory: '/home/csbr/data', remoteDirectorySDF: false, removePrefix: '', sourceFiles: 'output/*.*')], usePromotionTimestamp: false, useWorkspaceInPromotion: false, verbose: false)])
+                        sshPublisher(publishers: [sshPublisherDesc(configName: 'csbr', transfers: [sshTransfer(cleanRemote: false, excludes: '', execCommand: 'sh /mnt/eureka-server/masterbuild.sh', execTimeout: 120000, flatten: false, makeEmptyDirs: false, noDefaultExcludes: false, patternSeparator: '[, ]+', remoteDirectory: '/mnt/csbr/data', remoteDirectorySDF: false, removePrefix: '', sourceFiles: 'output/*.*')], usePromotionTimestamp: false, useWorkspaceInPromotion: false, verbose: false)])
                         echo 'Depoly ${SVN_FOLD} success on master ...'
                     }
                 }
@@ -78,7 +79,7 @@ pipeline {
     post {
         always {
             echo 'Archive artifacts'
-            archiveArtifacts artifacts: "${SVN_FOLD}/target/*.jar", excludes: "${SVN_FOLD}/target"
+            archiveArtifacts artifacts: "**/target/*.jar", excludes: "**/target"
         }
     }
 

@@ -3,13 +3,15 @@ spring:
     name: zuul-server
   cloud:
     config:
-      uri: http://user:123456@localhost:8888/
+      uri: http://user:123456@49.4.23.228:8888/
       profile: dev
       label: master
   boot:
     admin:
       client:
-        url: http://127.0.0.1:7086
+        url: http://49.4.23.228:7086
+        instance:
+          prefer-ip: true
 ##admin监控配置
 management:
   metrics:

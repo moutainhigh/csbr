@@ -1,7 +1,7 @@
 spring:
   cloud:
     config:
-      uri: http://user:123456@127.0.0.1:8888/
+      uri: http://user:123456@49.4.23.228:8888/
       profile: dev
       label: master
 #---
@@ -11,10 +11,14 @@ spring:
 #      uri: http://user:123456@127.0.0.1:8888/
 #      profile: pro
 #      label: master
-#  boot:
-#    admin:
-#      client:
-#        url: http://127.0.0.1:7086
+  boot:
+    admin:
+      client:
+        url: http://49.4.23.228:7086
+        instance:
+          prefer-ip: true
+#        username: admin
+#        password: admin
 #---
 #spring:
 #  cloud:

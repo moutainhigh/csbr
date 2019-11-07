@@ -26,6 +26,9 @@ public class ZipkinServerApplication implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        logger.info("=========hello World ELK========");
+        for (int i = 0; i <99 ; i++) {
+            logger.info("=========hello World ELK========");
+        }
+
     }
 }

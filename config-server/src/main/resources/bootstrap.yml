@@ -9,11 +9,11 @@ spring:
     config:
       server:
         git:
-          uri: https://github.com/hengzhangdashuaibi/spring-cloud-config
+          uri: http://test.csylcloud.com:8000/csbr-cloud-palt/csbr-cloud-config.git
           search-paths: /service-* # git仓库地址下的相对地址，可以配置多个，用,分割。
           default-label: master
           force-pull: true
-          username: 18217428005
+          username: zhangheng
           password: woainiZHANG520
 #    bus:
 #      trace:
@@ -30,11 +30,13 @@ spring:
   boot:
     admin:
       client:
-        url: http://127.0.0.1:7086
-eureka:
-  client:
-    service-url:
-      default-zone: http://127.0.0.1:8761/eureka/
+        url: http://49.4.23.228:7086
+        instance:
+          prefer-ip: true
+#eureka:
+#  client:
+#    service-url:
+#      default-zone: http://49.4.23.228:8761/eureka/
 ---
 #spring:
 #  profiles: sh-pro

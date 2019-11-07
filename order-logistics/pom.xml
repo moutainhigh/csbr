@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>2.1.6.RELEASE</version>
+        <relativePath/> <!-- lookup parent from repository -->
+    </parent>
+    <groupId>com.csbr.cloud</groupId>
+    <artifactId>order-logistics</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+    <name>order-logistics</name>
+    <description>Logistics order MS</description>
+
+    <properties>
+        <java.version>1.8</java.version>
+        <cabr-package.version>1.0.1-SNAPSHOT</cabr-package.version>
+    </properties>
+
+    <dependencies>
+        <!-- csbr云中台自有包 -->
+        <dependency>
+            <groupId>com.csbr.qingcloud</groupId>
+            <artifactId>csbr-cloud-common</artifactId>
+            <version>${cabr-package.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.csbr.qingcloud</groupId>
+            <artifactId>csbr-cloud-mybatis</artifactId>
+            <version>${cabr-package.version}</version>
+        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>com.csbr.qingcloud</groupId>-->
+<!--            <artifactId>csbr-cloud-redis</artifactId>-->
+<!--            <version>${cabr-package.version}</version>-->
+<!--        </dependency>-->
+        <dependency>
+            <groupId>com.csbr.qingcloud</groupId>
+            <artifactId>csbr-cloud-swagger</artifactId>
+            <version>${cabr-package.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.csbr.qingcloud</groupId>
+            <artifactId>csbr-cloud-distributelock</artifactId>
+            <version>1.0.1-SNAPSHOT</version>
+        </dependency>
+
+        <!-- 测试用 -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <finalName>order-logistics-server</finalName>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+            <!--使用jib快速构建摆脱dockerfile文件-->
+            <!--			<plugin>-->
+            <!--				<groupId>com.google.cloud.tools</groupId>-->
+            <!--				<artifactId>jib-maven-plugin</artifactId>-->
+            <!--				<version>0.9.0</version>-->
+            <!--				<configuration>-->
+            <!--					<to>-->
+            <!--						<image>gcr.io/my-project/image-built-with-jib</image>-->
+            <!--					</to>-->
+            <!--				</configuration>-->
+            <!--			</plugin>-->
+            <!--使用dockerfile文件构建-->
+            <!--			<plugin>-->
+            <!--				<groupId>com.spotify</groupId>-->
+            <!--				<artifactId>dockerfile-maven-plugin</artifactId>-->
+            <!--				<version>1.2.2</version>-->
+            <!--				<executions>-->
+            <!--					<execution>-->
+            <!--						<id>default</id>-->
+            <!--						<goals>-->
+            <!--							<goal>build</goal>-->
+            <!--							<goal>push</goal>-->
+            <!--						</goals>-->
+            <!--					</execution>-->
+            <!--				</executions>-->
+            <!--				<configuration>-->
+            <!--					<repository>${docker.image.prefix}/${project.artifactId}</repository>-->
+            <!--					&lt;!&ndash;<buildArgs>&ndash;&gt;-->
+            <!--					&lt;!&ndash;<JAR_FILE>target/${project.build.finalName}.jar</JAR_FILE>&ndash;&gt;-->
+            <!--					&lt;!&ndash;</buildArgs>&ndash;&gt;-->
+            <!--				</configuration>-->
+            <!--			</plugin>-->
+        </plugins>
+    </build>
+
+</project>

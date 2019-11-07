@@ -4,5 +4,7 @@ VOLUME /tmp
 #COPY ${JAR_FILE} mscrm.jar
 #RUN bash -c 'touch /mscrm.jar'
 ADD target/hystrix-dashboard.jar hystrix-dashboard.jar
-EXPOSE 8083
-ENTRYPOINT ["java","-Djava.security.egd=file:/dev/./urandom","-jar","/hystrix-dashboard.jar"]
+ENV CE=$CE
+ENV JAVA_OPTS=$JAVA_OPTS
+EXPOSE 2222
+ENTRYPOINT ["sh", "-c","java $JAVA_OPTS -Djava.security.egd=file:/dev/./urandom -jar /hystrix-dashboard.jar --spring.cloud.config.profile=$CE"]

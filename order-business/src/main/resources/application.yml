@@ -1,0 +1,91 @@
+spring:
+  redis:
+    host: 210.12.100.202
+    port: 10001
+    password: chuangshi@2017#
+    timeout: 1000
+#    cluster:
+#      nodes:
+#        - 210.12.100.202:10001
+#      max-redirects: 3
+##      key-ttl:
+##        user: 300
+  application:
+    name: order-business-server
+  datasource:
+    schema: classpath:init.sql
+    sql-script-encoding: utf-8
+    initialization-mode: ALWAYS
+    dynamic:
+      primary: master
+      druid:
+        initial-size: 0
+        max-active: 8
+        min-idle: 2
+        max-wait: -1
+        min-evictable-idle-time-millis: 30000
+        max-evictable-idle-time-millis: 30000
+        time-between-eviction-runs-millis: 0
+        validation-query: select 1
+        validation-query-timeout: -1
+        test-on-borrow: false
+        test-on-return: false
+        test-while-idle: true
+        pool-prepared-statements: true
+        #        max-open-prepared-statements: 100
+        filters: stat,wall
+        share-prepared-statements: true
+      datasource:
+        master:
+          url: jdbc:mysql://139.9.190.186:3306/ms_order_center?useUnicode=true&characterEncoding=UTF-8&useSSL=false&autoReconnect=true&serverTimezone=Asia/Shanghai
+          username: root
+          password: 123456
+          driver-class-name: com.mysql.cj.jdbc.Driver
+          druid:
+            initial-size: 5
+        slave:
+          url: jdbc:mysql://139.9.190.186:3306/ms_order_center?useUnicode=true&characterEncoding=UTF-8&useSSL=false&autoReconnect=true&serverTimezone=Asia/Shanghai
+          username: root
+          password: 123456
+          driver-class-name: com.mysql.cj.jdbc.Driver
+          druid:
+            initial-size: 5
+  # Seata
+  cloud:
+    alibaba:
+      seata:
+        tx-service-group: my_test_tx_group
+
+##mybatsipuls
+#数据库字段开启驼峰
+mybatis:
+  configuration:
+    map-underscore-to-camel-case: true
+    callSettersOnNulls: true
+mybatis-plus:
+  global-config:
+    db-config:
+      id-type: uuid
+  mapper-locations: classpath:/mapper/*Mapper.xml
+  type-aliases-package: com.csbr.cloud.orderbusiness.entity
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+pagehelper:
+  helperDialect: mysql
+  reasonable: true
+  supportMethodsArguments: true
+  params: count=countSql
+eureka:
+  # 修改在服务中心的地址status为 ip+端口 【例如：10.0.0.100:88】
+  instance:
+    prefer-ip-address: true
+    instance-id: ${spring.application.name}:${server.port}
+  client:
+    serviceUrl:
+      defaultZone: http://49.4.23.228:8761/eureka/
+server:
+  port: 8082
+
+redisson:
+  address: redis://210.12.100.202:10001
+  password: chuangshi@2017#
