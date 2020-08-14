@@ -9,30 +9,30 @@ spring:
     config:
       server:
         git:
-          uri: http://test.csylcloud.com:8000/csbr-cloud-palt/csbr-cloud-config.git
+          uri: http://192.168.5.4:8000/csbr-cloud-palt/csbr-cloud-config.git
           search-paths: /service-* # git仓库地址下的相对地址，可以配置多个，用,分割。
           default-label: master
           force-pull: true
           username: zhangheng
           password: woainiZHANG520
-#    bus:
-#      trace:
-#        enabled: true
-#  rabbitmq:
-#    host: 10.2.159.70
-#    port: 5672
-#    username: guest
-#    password: guest
-#    virtual-host: /
----
-spring:
-#  profiles: pro
   boot:
     admin:
       client:
-        url: http://49.4.23.228:7086
+        url: http://192.168.5.4:7086
         instance:
           prefer-ip: true
+
+management:
+  endpoint:
+    bus-refresh:
+      enabled: true
+    health:
+      show-details: always
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+
 #eureka:
 #  client:
 #    service-url:
@@ -49,11 +49,4 @@ spring:
 #    service-url:
 #      defaultZone: http://10.2.159.112:8761/eureka/
 
-#management:
-#  endpoint:
-#    bus-refresh:
-#      enabled: true
-#  endpoints:
-#    web:
-#      exposure:
-#        include: refresh,bus-refresh
+

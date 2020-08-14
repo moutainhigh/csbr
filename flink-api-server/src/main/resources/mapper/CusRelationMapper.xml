@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.csbr.cloud.flink.api.mybatis.basedata.mapper.CusRelationMapper">
+    <!-- 分页返回满足查询条件的信息 -->
+  <select id="searchCusRelations" parameterType="com.csbr.cloud.flink.api.mybatis.basedata.mapper.so.CusRelationSO" resultType="com.csbr.cloud.flink.api.mybatis.basedata.entity.CusRelation">
+    <![CDATA[
+      SELECT
+        `guid` AS `guid`,
+        `id` AS `id`,
+        `source_data` AS `sourceData`,
+        `source_guid` AS `sourceGuid`
+      FROM `cus_relation`
+    ]]>
+    <include refid="searchConditions" />
+    <![CDATA[
+      ORDER BY `id` DESC
+    ]]>
+  </select>
+
+  <!-- 查询条件 -->
+  <sql id="searchConditions">
+    <where>
+      <if test="sourceGuid!=null and sourceGuid!=''">
+        <![CDATA[ and `source_guid`=#{sourceGuid} ]]>
+      </if>
+      <if test="sourceData!=null and sourceData!=''">
+        <![CDATA[ and `source_data`=#{sourceData} ]]>
+      </if>
+    </where>
+  </sql>
+
+  <select id="searchCusRelation" parameterType="com.csbr.cloud.flink.api.mybatis.basedata.mapper.so.CusRelationSO" resultType="com.csbr.cloud.flink.api.mybatis.basedata.entity.CusRelation">
+    <![CDATA[
+      SELECT
+        `guid` AS `guid`,
+        `id` AS `id`,
+        `source_data` AS `sourceData`,
+        `source_guid` AS `sourceGuid`
+      FROM `cus_relation`
+    ]]>
+    <include refid="searchConditions" />
+    <![CDATA[
+      ORDER BY `id` DESC
+      LIMIT 1
+    ]]>
+  </select>
+</mapper>

@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.csbr.qingcloud.user.scm.mybatis.mapper.MfStaffMapper">
+        <!-- 分页返回满足查询条件的人员信息 -->
+    <select id="mapperPageMfStafves" resultType="com.csbr.qingcloud.user.scm.mybatis.entity.MfStaff">
+      <![CDATA[
+        SELECT
+          `biz_state` AS `bizState`,
+          `city` AS `city`,
+          `create_time` AS `createTime`,
+          `create_user_id` AS `createUserId`,
+          `create_user_name` AS `createUserName`,
+          `date1` AS `date1`,
+          `date2` AS `date2`,
+          `date3` AS `date3`,
+          `district` AS `district`,
+          `email` AS `email`,
+          `guid` AS `guid`,
+          `help_code` AS `helpCode`,
+          `is_deleted` AS `isDeleted`,
+          `is_tenant_init` AS `isTenantInit`,
+          `job_number` AS `jobNumber`,
+          `leader_guid` AS `leaderGuid`,
+          `logon_user` AS `logonUser`,
+          `merchant_guid` AS `merchantGuid`,
+          `num1` AS `num1`,
+          `num2` AS `num2`,
+          `num3` AS `num3`,
+          `organisation_guid` AS `organisationGuid`,
+          `province` AS `province`,
+          `remark` AS `remark`,
+          `sex` AS `sex`,
+          `staff_name` AS `staffName`,
+          `staff_type` AS `staffType`,
+          `tenant_guid` AS `tenantGuid`,
+          `update_time` AS `updateTime`,
+          `update_user_id` AS `updateUserId`,
+          `update_user_name` AS `updateUserName`,
+          `user_guid` AS `userGuid`,
+          `varchar1` AS `varchar1`,
+          `varchar2` AS `varchar2`,
+          `varchar3` AS `varchar3`,
+          `varchar4` AS `varchar4`,
+          `venue` AS `venue`,
+          `we_chat_no` AS `weChatNo`,
+          `we_chat_opent_id` AS `weChatOpentId`,
+          `mobile_no` AS `mobileNo`
+        FROM `mf_staff`
+      ]]>
+      <include refid="searchConditions" />
+      <![CDATA[
+        ORDER BY `guid` DESC
+      ]]>
+    </select>
+    
+      <!-- 查询条件 -->
+    <sql id="searchConditions">
+      <where>
+        <if test="so.tenantGuid != null and so.tenantGuid != ''">
+          <![CDATA[ and `tenant_guid`=#{so.tenantGuid} ]]>
+        </if>
+      </where>
+    </sql>
+    </mapper>

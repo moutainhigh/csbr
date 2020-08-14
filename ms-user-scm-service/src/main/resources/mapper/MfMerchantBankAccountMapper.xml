@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.csbr.qingcloud.user.scm.mybatis.mapper.MfMerchantBankAccountMapper">
+        <!-- 分页返回满足查询条件的商户银行账号信息 -->
+    <select id="mapperPageMfMerchantBankAccounts" resultType="com.csbr.qingcloud.user.scm.mybatis.entity.MfMerchantBankAccount">
+      <![CDATA[
+        SELECT
+          `bank` AS `bank`,
+          `bank_account` AS `bankAccount`,
+          `bank_code` AS `bankCode`,
+          `create_time` AS `createTime`,
+          `create_user_id` AS `createUserId`,
+          `create_user_name` AS `createUserName`,
+          `GUID` AS `guid`,
+          `is_deleted` AS `isDeleted`,
+          `merchant_guid` AS `merchantGuid`,
+          `name` AS `name`,
+          `staff_name` AS `staffName`,
+          `update_time` AS `updateTime`,
+          `update_user_id` AS `updateUserId`,
+          `update_user_name` AS `updateUserName`
+        FROM `mf_merchant_bank_account`
+      ]]>
+      <include refid="searchConditions" />
+      <![CDATA[
+        ORDER BY `GUID` DESC
+      ]]>
+    </select>
+    
+      <!-- 查询条件 -->
+    <sql id="searchConditions">
+      <where>
+        <if test="so.merchantGuid != null and so.merchantGuid != ''">
+          <![CDATA[ and `merchant_guid`=#{so.merchantGuid} ]]>
+        </if>
+      </where>
+    </sql>
+    </mapper>

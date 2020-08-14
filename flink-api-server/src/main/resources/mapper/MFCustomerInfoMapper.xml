@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.csbr.cloud.flink.api.mybatis.basedata.mapper.MfCustomerInfoMapper">
+    <!-- 分页返回满足查询条件的信息 -->
+  <select id="searchMfCustomerInfos" parameterType="com.csbr.cloud.flink.api.mybatis.basedata.mapper.so.MfCustomerInfoSO" resultType="com.csbr.cloud.flink.api.mybatis.basedata.entity.MfCustomerInfo">
+    <![CDATA[
+      SELECT
+        `address` AS `address`,
+        `chinese_name` AS `chineseName`,
+        `city` AS `city`,
+        `contact_tel` AS `contactTel`,
+        `contacts` AS `contacts`,
+        `create_time` AS `createTime`,
+        `district` AS `district`,
+        `enterprise_class` AS `enterpriseClass`,
+        `enterprise_type` AS `enterpriseType`,
+        `guid` AS `guid`,
+        `med_level` AS `medLevel`,
+        `province` AS `province`
+      FROM `mf_customer_info`
+    ]]>
+    <include refid="searchConditions" />
+    <![CDATA[
+      ORDER BY `guid` DESC
+    ]]>
+  </select>
+
+  <!-- 查询条件 -->
+  <sql id="searchConditions">
+    <where>
+      <if test="chineseName!=null and chineseName!=''">
+        <![CDATA[ and `chinese_name`=#{chineseName} ]]>
+      </if>
+    </where>
+  </sql>
+</mapper>

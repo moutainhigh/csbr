@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.csbr.cloud.flink.api.mybatis.basedata.mapper.PDeliverySumMapper">
+    <!-- 分页返回满足查询条件的信息 -->
+  <select id="searchPDeliverySums" parameterType="com.csbr.cloud.flink.api.mybatis.basedata.mapper.so.PDeliverySumSO" resultType="com.csbr.cloud.flink.api.mybatis.basedata.entity.PDeliverySum">
+    <![CDATA[
+      SELECT
+        `chill_car` AS `chillCar`,
+        `chill_car_sum` AS `chillCarSum`,
+        `create_time` AS `createTime`,
+        `dot_number` AS `dotNumber`,
+        `dot_totle` AS `dotTotle`,
+        `fenbo_number` AS `fenboNumber`,
+        `id` AS `id`,
+        `totle_car` AS `totleCar`,
+        `totle_car_sum` AS `totleCarSum`,
+        `totle_delivery` AS `totleDelivery`,
+        `update_time` AS `updateTime`
+      FROM `p_delivery_sum`
+    ]]>
+    <include refid="searchConditions" />
+    <![CDATA[
+      ORDER BY `id` DESC
+    ]]>
+  </select>
+
+  <!-- 查询条件 -->
+  <sql id="searchConditions">
+    <where>
+    </where>
+  </sql>
+
+  <select id="searchPDeliverySum" parameterType="com.csbr.cloud.flink.api.mybatis.basedata.mapper.so.PDeliverySumSO" resultType="com.csbr.cloud.flink.api.mybatis.basedata.entity.PDeliverySum">
+    <![CDATA[
+      SELECT
+        `chill_car` AS `chillCar`,
+        `chill_car_sum` AS `chillCarSum`,
+        `create_time` AS `createTime`,
+        `dot_number` AS `dotNumber`,
+        `dot_totle` AS `dotTotle`,
+        `fenbo_number` AS `fenboNumber`,
+        `id` AS `id`,
+        `totle_car` AS `totleCar`,
+        `totle_car_sum` AS `totleCarSum`,
+        `totle_delivery` AS `totleDelivery`,
+        `update_time` AS `updateTime`
+      FROM `p_delivery_sum`
+    ]]>
+    <include refid="searchConditions" />
+    <![CDATA[
+      ORDER BY `id` DESC
+      LIMIT 1
+    ]]>
+  </select>
+</mapper>

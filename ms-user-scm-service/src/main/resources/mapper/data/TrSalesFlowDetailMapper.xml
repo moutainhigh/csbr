@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.csbr.qingcloud.user.scm.mybatis.data.mapper.TrSalesFlowDetailMapper">
+        <!-- 分页返回满足查询条件的销售流量明细信息 -->
+    <select id="mapperPageTrSalesFlowDetails" resultType="com.csbr.qingcloud.user.scm.mybatis.data.entity.TrSalesFlowDetail">
+      <![CDATA[
+        SELECT
+          `guid` AS `guid`,
+          `tenant_guid` AS `tenantGuid`,
+          `sales_flow_guid` AS `salesFlowGuid`,
+          `goods_code` AS `goodsCode`,
+          `goods_name` AS `goodsName`,
+          `lot` AS `lot`,
+          `goods_spec` AS `goodsSpec`,
+          `qty` AS `qty`,
+          `accounting_price` AS `accountingPrice`,
+          `out_price` AS `outPrice`,
+          `accounting_amount` AS `accountingAmount`,
+          `out_amount` AS `outAmount`,
+          `create_user_id` AS `createUserId`,
+          `create_user_name` AS `createUserName`,
+          `update_user_id` AS `updateUserId`,
+          `update_user_name` AS `updateUserName`,
+          `create_time` AS `createTime`,
+          `update_time` AS `updateTime`
+        FROM `tr_sales_flow_detail`
+      ]]>
+      <include refid="searchConditions" />
+      <![CDATA[
+        ORDER BY `guid` DESC
+      ]]>
+    </select>
+    
+      <!-- 查询条件 -->
+    <sql id="searchConditions">
+      <where>
+        <if test="so.goodsCode != null and so.goodsCode != ''">
+          <![CDATA[ and `goods_code`=#{so.goodsCode} ]]>
+        </if>
+      </where>
+    </sql>
+    </mapper>

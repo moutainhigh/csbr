@@ -1,0 +1,50 @@
+spring:
+  application:
+    name: admin-server
+#  mail:
+#    host: 192.168.5.4
+#    username: 18217428005@163.com
+#    password: woainiZHANG520
+#    properties:
+#      mail:
+#        smtp:
+#          auth: true
+#          ssl:
+#            enable: true
+#          starttls:
+#            enable: true
+#            required: true
+  security:
+    user:
+      name: "admin"
+      password: "admin"
+#  boot:
+#    admin:
+#      notify:
+#        mail:
+#          to: 18217428005@163.com
+#          from: 18217428005@163.com
+#          enabled: true
+#          ##忽略邮件文件
+#          ignore-changes: UNKNOWN:UP,UNKNOWN:OFFLINE,OFFLINE:UP
+server:
+  port: 7086
+##eureka配置
+eureka:
+  # 修改在服务中心的地址status为 ip+端口 【例如：10.0.0.100:88】
+  instance:
+    prefer-ip-address: true
+    instance-id: ${spring.application.name}:${eureka.instance.non-secure-port}
+    leaseRenewalIntervalInSeconds: 10
+    health-check-url-path: /actuator/health
+    #设置外网IP号
+#    ip-address: 192.168.5.4
+    #设置外网端口号
+    non-secure-port: 7086
+    metadata-map:
+      user.name: ${spring.security.user.name}
+      user.password: ${spring.security.user.password}
+  client:
+    registryFetchIntervalSeconds: 5
+    serviceUrl:
+      defaultZone: http://192.168.5.4:8761/eureka/

@@ -1,0 +1,473 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.csbr.cloud.hy.server.mapper.TrTplpoMainMapper">
+    <select id="getPoMainSelect" resultType  ="java.util.Map" parameterType="java.util.Map">
+        SELECT
+             bb.main_po_guid AS mainPoGuid,
+             main.tenant_guid AS tenantGuid,
+             main.corp_guid AS corpGuid,
+             main.tplpo_no AS tplPoNo,
+             main.state AS mainState,
+             main.deliver_guid AS deliverGuid,
+             main.deliver_name AS deliverName,
+             main.warehouse_guid AS warehouseGuid,
+             main.warehouse_name AS warehouseName,
+             main.route_guid AS routeGuid,
+             main.route_name AS routeName,
+             main.departure_province AS departureProvince,
+             main.departure_city AS departureCity,
+             main.departure_district AS departureDistrict,
+             main.departure_venue AS departureVenue,
+             main.departure_address AS departureAddress,
+             main.arrival_province AS arrivalProvince,
+             main.arrival_city AS arrivalCity,
+             main.arrival_district AS arrivalDistrict,
+             main.arrival_venue AS arrivalVenue,
+             main.arrival_address AS arrivalAddress,
+             main.send_contacts AS sendContacts,
+             main.send_contacts_tel AS sendContactsTel,
+             main.collectiontime AS collectiontime,
+             main.reality_collectiontime AS realityCollectiontime,
+             main.pick_contacts AS pickContacts,
+             main.pick_contacts_tel AS pickContactsTel,
+             main.departure_date AS departureDate,
+             main.arrival_arrived_date AS arrivalArrivedDate,
+             main.last_arrival_arrived_date AS lastArrivalArrivedDate,
+             main.reality_arrival_arrived_date AS realityArrivalArrivedDate,
+             main.transport_way AS transportWay,
+             main.issued_vehicle_type AS issuedVehicleType,
+             main.is_ccbb AS isCcbb,
+             main.input_date AS inputDate,
+             main.orders_pkgs AS ordersPkgs,
+             main.orders_weight AS ordersWeight,
+             main.orders_volumn AS ordersVolumn,
+             main.operator_name AS operatorName,
+             main.settle_type AS settleType,
+             main.carrier_amount AS carrierAmount,
+             main.delivery_way AS deliveryWay,
+             main.time_limit AS timeLimit,
+             main.shape AS shape,
+             main.urgent_flag AS urgentFlag,
+             main.wait_shipping_area AS waitShippingArea,
+             main.back_bill_flag AS backBillFlag,
+             bb.b_bill_no AS bBillNo,
+             bb.b_bill_uid AS bBillUid,
+             bb.bill_type AS billType,
+             bb.business_type AS businessType,
+             bb.cargo_owner_guid AS cargoOwnerGuid,
+             bb.cargo_owner_name AS cargoOwnerName,
+             bb.supply_corp_guid AS supplyCorpGuid,
+             bb.supply_corp_name AS supplyCorpName,
+             bb.sale_corp_guid AS saleCorpGuid,
+             bb.sale_corp_name AS saleCorpName,
+             bb.buyer_guid AS buyerGuid,
+             bb.buyer_name AS buyerName,
+             bb.bill_date AS billDate
+        FROM
+            tr_tplpo_main main
+            LEFT JOIN tr_tplbb bb ON main.guid = bb.main_po_guid
+         WHERE 1=1
+         <if test="tenantGuid != null and tenantGuid != ''">
+            AND main.tenant_guid = #{tenantGuid}
+         </if>
+         <if test="tplPoNo != null and tplPoNo != ''">
+            AND main.tplpo_no = #{tplPoNo}
+         </if>
+         <if test="mainPoGuid != null and mainPoGuid != ''">
+            AND bb.main_po_guid = #{mainPoGuid}
+         </if>
+         <if test="bBillNo != null and bBillNo != ''">
+            AND bb.b_bill_no = #{bBillNo}
+         </if>
+         <if test="businessType != null and businessType != ''">
+            AND bb.business_type = #{businessType}
+         </if>
+         <if test="departureAddress != null and departureAddress != ''">
+            AND main.departure_address = #{departureAddress}
+         </if>
+         <if test="saleCorpGuid != null and saleCorpGuid != ''">
+            AND bb.sale_corp_guid = #{saleCorpGuid}
+         </if>
+         <if test="supplyCorpName != null and supplyCorpName != ''">
+            AND bb.sale_corp_name = #{supplyCorpName}
+         </if>
+         <if test="deliverGuid != null and deliverGuid != ''">
+            AND main.deliver_guid = #{deliverGuid}
+         </if>
+         <if test="deliverName != null and deliverName != ''">
+            AND main.deliver_name = #{deliverName}
+         </if>
+         <if test="cargoOwnerGuid != null and cargoOwnerGuid != ''">
+            AND bb.cargo_owner_guid = #{cargoOwnerGuid}
+         </if>
+         <if test="cargoOwnerName != null and cargoOwnerName != ''">
+            AND bb.cargo_owner_name = #{cargoOwnerName}
+         </if>
+         <if test="warehouseGuid != null and warehouseGuid != ''">
+            AND main.warehouse_guid = #{warehouseGuid}
+         </if>
+         <if test="warehouseName != null and warehouseName != ''">
+            AND main.warehouse_name = #{warehouseName}
+         </if>
+         <if test="routeGuid != null and routeGuid != ''">
+            AND main.route_guid = #{routeGuid}
+         </if>
+         <if test="routeName != null and routeName != ''">
+            AND main.route_name = #{routeName}
+         </if>
+         <if test="mainState != null and mainState != ''">
+            AND main.state = #{mainState}
+         </if>
+
+    </select>
+
+    <select id="getPoMainInfo" resultType  ="java.util.Map" parameterType="java.util.Map">
+        SELECT
+        bb.guid AS bbGuid,
+        bb.main_po_guid AS mainPoGuid,
+        main.tenant_guid AS tenantGuid,
+        main.corp_guid AS corpGuid,
+        main.tplpo_no AS tplPoNo,
+        main.state AS mainState,
+        main.deliver_guid AS deliverGuid,
+        main.deliver_name AS deliverName,
+        main.warehouse_guid AS warehouseGuid,
+        main.warehouse_name AS warehouseName,
+        main.route_guid AS routeGuid,
+        main.route_name AS routeName,
+        main.departure_province AS departureProvince,
+        main.departure_city AS departureCity,
+        main.departure_district AS departureDistrict,
+        main.departure_venue AS departureVenue,
+        main.departure_address AS departureAddress,
+        main.arrival_province AS arrivalProvince,
+        main.arrival_city AS arrivalCity,
+        main.arrival_district AS arrivalDistrict,
+        main.arrival_venue AS arrivalVenue,
+        main.arrival_address AS arrivalAddress,
+        main.send_contacts AS sendContacts,
+        main.send_contacts_tel AS sendContactsTel,
+        main.collectiontime AS collectiontime,
+        main.reality_collectiontime AS realityCollectiontime,
+        main.pick_contacts AS pickContacts,
+        main.pick_contacts_tel AS pickContactsTel,
+        main.departure_date AS departureDate,
+        main.arrival_arrived_date AS arrivalArrivedDate,
+        main.last_arrival_arrived_date AS lastArrivalArrivedDate,
+        main.reality_arrival_arrived_date AS realityArrivalArrivedDate,
+        main.transport_way AS transportWay,
+        main.issued_vehicle_type AS issuedVehicleType,
+        main.is_ccbb AS isCcbb,
+        main.input_date AS inputDate,
+        main.orders_pkgs AS ordersPkgs,
+        main.orders_weight AS ordersWeight,
+        main.orders_volumn AS ordersVolumn,
+        main.operator_name AS operatorName,
+        main.settle_type AS settleType,
+        main.carrier_amount AS carrierAmount,
+        main.delivery_way AS deliveryWay,
+        main.time_limit AS timeLimit,
+        main.shape AS shape,
+        main.urgent_flag AS urgentFlag,
+        main.wait_shipping_area AS waitShippingArea,
+        main.back_bill_flag AS backBillFlag,
+        bb.b_bill_no AS bBillNo,
+        bb.b_bill_uid AS bBillUid,
+        bb.bill_type AS billType,
+        bb.business_type AS businessType,
+        bb.cargo_owner_guid AS cargoOwnerGuid,
+        bb.cargo_owner_name AS cargoOwnerName,
+        bb.supply_corp_guid AS supplyCorpGuid,
+        bb.supply_corp_name AS supplyCorpName,
+        bb.sale_corp_guid AS saleCorpGuid,
+        bb.sale_corp_name AS saleCorpName,
+        bb.buyer_guid AS buyerGuid,
+        bb.buyer_name AS buyerName,
+        bb.bill_date AS billDate
+        FROM
+        tr_tplpo_main main
+        LEFT JOIN tr_tplbb bb ON main.guid = bb.main_po_guid
+        WHERE 1=1
+        <if test="guid != null and guid != ''">
+            AND main.guid = #{guid}
+        </if>
+        <if test="bBillNo != null and bBillNo != ''">
+            AND bb.b_bill_no = #{bBillNo}
+        </if>
+
+    </select>
+
+
+
+    <select id="getTimeoutOrderSelect" resultType  ="java.util.Map" parameterType="java.util.Map">
+        SELECT
+        bb.guid AS bbGuid,
+        bb.main_po_guid AS mainPoGuid,
+        main.tenant_guid AS tenantGuid,
+        main.corp_guid AS corpGuid,
+        main.tplpo_no AS tplPoNo,
+        main.state AS mainState,
+        main.deliver_guid AS deliverGuid,
+        main.deliver_name AS deliverName,
+        main.warehouse_guid AS warehouseGuid,
+        main.warehouse_name AS warehouseName,
+        main.route_guid AS routeGuid,
+        main.route_name AS routeName,
+        main.departure_province AS departureProvince,
+        main.departure_city AS departureCity,
+        main.departure_district AS departureDistrict,
+        main.departure_venue AS departureVenue,
+        main.departure_address AS departureAddress,
+        main.arrival_province AS arrivalProvince,
+        main.arrival_city AS arrivalCity,
+        main.arrival_district AS arrivalDistrict,
+        main.arrival_venue AS arrivalVenue,
+        main.arrival_address AS arrivalAddress,
+        main.send_contacts AS sendContacts,
+        main.send_contacts_tel AS sendContactsTel,
+        main.collectiontime AS collectiontime,
+        main.reality_collectiontime AS realityCollectiontime,
+        main.pick_contacts AS pickContacts,
+        main.pick_contacts_tel AS pickContactsTel,
+        main.departure_date AS departureDate,
+        main.arrival_arrived_date AS arrivalArrivedDate,
+        main.last_arrival_arrived_date AS lastArrivalArrivedDate,
+        main.reality_arrival_arrived_date AS realityArrivalArrivedDate,
+        main.transport_way AS transportWay,
+        main.issued_vehicle_type AS issuedVehicleType,
+        main.is_ccbb AS isCcbb,
+        main.input_date AS inputDate,
+        main.orders_pkgs AS ordersPkgs,
+        main.orders_weight AS ordersWeight,
+        main.orders_volumn AS ordersVolumn,
+        main.operator_name AS operatorName,
+        main.settle_type AS settleType,
+        main.carrier_amount AS carrierAmount,
+        main.delivery_way AS deliveryWay,
+        main.time_limit AS timeLimit,
+        main.shape AS shape,
+        main.urgent_flag AS urgentFlag,
+        main.wait_shipping_area AS waitShippingArea,
+        main.back_bill_flag AS backBillFlag,
+        bb.b_bill_no AS bBillNo,
+        bb.b_bill_uid AS bBillUid,
+        bb.bill_type AS billType,
+        bb.business_type AS businessType,
+        bb.cargo_owner_guid AS cargoOwnerGuid,
+        bb.cargo_owner_name AS cargoOwnerName,
+        bb.supply_corp_guid AS supplyCorpGuid,
+        bb.supply_corp_name AS supplyCorpName,
+        bb.sale_corp_guid AS saleCorpGuid,
+        bb.sale_corp_name AS saleCorpName,
+        bb.buyer_guid AS buyerGuid,
+        bb.buyer_name AS buyerName,
+        bb.bill_date AS billDate
+        FROM
+        tr_tplpo_main main
+        LEFT JOIN tr_tplbb bb ON main.guid = bb.main_po_guid
+        WHERE 1=1
+        <if test="tenantGuid != null and tenantGuid != ''">
+            AND main.tenant_guid = #{tenantGuid}
+        </if>
+        /*提货超时订单 实际提货时间 > 要求提货时间*/
+        <if test="orderType != null and orderType != '' and orderType = 1">
+            <![CDATA[
+            AND main.reality_collectiontime > main.collectiontime
+            ]]>
+        </if>
+        /*到货签收超时订单 实际到达日期 > 要求到达日期*/
+        <if test="orderType != null and orderType != '' and orderType = 2">
+            <![CDATA[
+            AND main.reality_arrival_arrived_date > main.arrival_arrived_date
+            ]]>
+        </if>
+        <if test="cargoOwnerGuid != null and cargoOwnerGuid != ''">
+            AND bb.cargo_owner_guid = #{cargoOwnerGuid}
+        </if>
+        <if test="cargoOwnerName != null and cargoOwnerName != ''">
+            AND bb.cargo_owner_name = #{cargoOwnerName}
+        </if>
+        <if test="deliverGuid != null and deliverGuid != ''">
+            AND main.deliver_guid = #{deliverGuid}
+        </if>
+        <if test="deliverName != null and deliverName != ''">
+            AND main.deliver_name = #{deliverName}
+        </if>
+        <if test="startTime != null and startTime != ''">
+            <![CDATA[
+            AND bb.bill_date >= str_to_date( #{startTime},'%Y-%m-%d %H:%i:%s')
+            ]]>
+        </if>
+        <if test="endTime != null and endTime != ''">
+            <![CDATA[
+            AND bb.bill_date < str_to_date( #{endTime},'%Y-%m-%d %H:%i:%s')
+            ]]>
+        </if>
+
+    </select>
+
+    <select id="getTrTplpoMainInfo" resultType  ="java.util.Map" parameterType="java.util.Map">
+        SELECT
+        bb.guid AS bbGuid,
+        bb.main_po_guid AS mainPoGuid,
+        main.tenant_guid AS tenantGuid,
+        main.corp_guid AS corpGuid,
+        main.tplpo_no AS tplPoNo,
+        main.state AS mainState,
+        main.deliver_guid AS deliverGuid,
+        main.deliver_name AS deliverName,
+        main.warehouse_guid AS warehouseGuid,
+        main.warehouse_name AS warehouseName,
+        main.route_guid AS routeGuid,
+        main.route_name AS routeName,
+        main.departure_province AS departureProvince,
+        main.departure_city AS departureCity,
+        main.departure_district AS departureDistrict,
+        main.departure_venue AS departureVenue,
+        main.departure_address AS departureAddress,
+        main.arrival_province AS arrivalProvince,
+        main.arrival_city AS arrivalCity,
+        main.arrival_district AS arrivalDistrict,
+        main.arrival_venue AS arrivalVenue,
+        main.arrival_address AS arrivalAddress,
+        main.send_contacts AS sendContacts,
+        main.send_contacts_tel AS sendContactsTel,
+        main.collectiontime AS collectiontime,
+        main.reality_collectiontime AS realityCollectiontime,
+        main.pick_contacts AS pickContacts,
+        main.pick_contacts_tel AS pickContactsTel,
+        main.departure_date AS departureDate,
+        main.arrival_arrived_date AS arrivalArrivedDate,
+        main.last_arrival_arrived_date AS lastArrivalArrivedDate,
+        main.reality_arrival_arrived_date AS realityArrivalArrivedDate,
+        main.transport_way AS transportWay,
+        main.issued_vehicle_type AS issuedVehicleType,
+        main.is_ccbb AS isCcbb,
+        main.input_date AS inputDate,
+        main.orders_pkgs AS ordersPkgs,
+        main.orders_weight AS ordersWeight,
+        main.orders_volumn AS ordersVolumn,
+        main.operator_name AS operatorName,
+        main.settle_type AS settleType,
+        main.carrier_amount AS carrierAmount,
+        main.delivery_way AS deliveryWay,
+        main.time_limit AS timeLimit,
+        main.shape AS shape,
+        main.urgent_flag AS urgentFlag,
+        main.wait_shipping_area AS waitShippingArea,
+        main.back_bill_flag AS backBillFlag,
+        bb.b_bill_no AS bBillNo,
+        bb.b_bill_uid AS bBillUid,
+        bb.bill_type AS billType,
+        bb.business_type AS businessType,
+        bb.cargo_owner_guid AS cargoOwnerGuid,
+        bb.cargo_owner_name AS cargoOwnerName,
+        bb.supply_corp_guid AS supplyCorpGuid,
+        bb.supply_corp_name AS supplyCorpName,
+        bb.sale_corp_guid AS saleCorpGuid,
+        bb.sale_corp_name AS saleCorpName,
+        bb.buyer_guid AS buyerGuid,
+        bb.buyer_name AS buyerName,
+        bb.bill_date AS billDate
+        FROM
+        tr_tplpo_main main
+        LEFT JOIN tr_tplbb bb ON main.guid = bb.main_po_guid
+        WHERE 1=1
+        <if test="bBillGuid != null and bBillGuid != ''">
+            AND bb.guid = #{bBillGuid}
+        </if>
+    </select>
+
+    <!--每日订单时效统计-->
+    <select id="trDailyOrderTimeLimitJob" resultType  ="java.util.Map" parameterType="java.util.Map">
+        SELECT
+        COUNT(main.orders_pkgs) AS totleDeliverGoods,
+        main.tenant_guid AS tenantGuid,
+		main.corp_guid AS corpGuid,
+        main.deliver_guid AS deliverGuid,
+        main.deliver_name AS deliverName,
+        bb.cargo_owner_guid AS cargoOwnerGuid,
+        bb.cargo_owner_name AS cargoOwnerName
+        FROM
+        tr_tplpo_main main
+        LEFT JOIN tr_tplbb bb ON main.guid = bb.main_po_guid
+        WHERE 1=1
+        AND main.create_time = date_sub(curdate(),interval 1 day)
+        GROUP BY bb.cargo_owner_guid,bb.cargo_owner_name,main.deliver_guid,main.deliver_name
+    </select>
+
+    <!--状态!=81-->
+    <select id="getPoMainAndBbList" resultType  ="java.util.Map" parameterType="java.util.Map">
+        SELECT
+        bb.guid AS bbGuid,
+        bb.main_po_guid AS mainPoGuid,
+        main.tenant_guid AS tenantGuid,
+        main.corp_guid AS corpGuid,
+        main.tplpo_no AS tplPoNo,
+        main.state AS mainState,
+        main.deliver_guid AS deliverGuid,
+        main.deliver_name AS deliverName,
+        main.warehouse_guid AS warehouseGuid,
+        main.warehouse_name AS warehouseName,
+        main.route_guid AS routeGuid,
+        main.route_name AS routeName,
+        main.departure_province AS departureProvince,
+        main.departure_city AS departureCity,
+        main.departure_district AS departureDistrict,
+        main.departure_venue AS departureVenue,
+        main.departure_address AS departureAddress,
+        main.arrival_province AS arrivalProvince,
+        main.arrival_city AS arrivalCity,
+        main.arrival_district AS arrivalDistrict,
+        main.arrival_venue AS arrivalVenue,
+        main.arrival_address AS arrivalAddress,
+        main.send_contacts AS sendContacts,
+        main.send_contacts_tel AS sendContactsTel,
+        main.collectiontime AS collectiontime,
+        main.reality_collectiontime AS realityCollectiontime,
+        main.pick_contacts AS pickContacts,
+        main.pick_contacts_tel AS pickContactsTel,
+        main.departure_date AS departureDate,
+        main.arrival_arrived_date AS arrivalArrivedDate,
+        main.last_arrival_arrived_date AS lastArrivalArrivedDate,
+        main.reality_arrival_arrived_date AS realityArrivalArrivedDate,
+        main.transport_way AS transportWay,
+        main.issued_vehicle_type AS issuedVehicleType,
+        main.is_ccbb AS isCcbb,
+        main.input_date AS inputDate,
+        main.orders_pkgs AS ordersPkgs,
+        main.orders_weight AS ordersWeight,
+        main.orders_volumn AS ordersVolumn,
+        main.operator_name AS operatorName,
+        main.settle_type AS settleType,
+        main.carrier_amount AS carrierAmount,
+        main.delivery_way AS deliveryWay,
+        main.time_limit AS timeLimit,
+        main.shape AS shape,
+        main.urgent_flag AS urgentFlag,
+        main.wait_shipping_area AS waitShippingArea,
+        main.back_bill_flag AS backBillFlag,
+        bb.b_bill_no AS bBillNo,
+        bb.b_bill_uid AS bBillUid,
+        bb.bill_type AS billType,
+        bb.business_type AS businessType,
+        bb.cargo_owner_guid AS cargoOwnerGuid,
+        bb.cargo_owner_name AS cargoOwnerName,
+        bb.supply_corp_guid AS supplyCorpGuid,
+        bb.supply_corp_name AS supplyCorpName,
+        bb.sale_corp_guid AS saleCorpGuid,
+        bb.sale_corp_name AS saleCorpName,
+        bb.buyer_guid AS buyerGuid,
+        bb.buyer_name AS buyerName,
+        bb.bill_date AS billDate
+        FROM
+        tr_tplpo_main main
+        LEFT JOIN tr_tplbb bb ON main.guid = bb.main_po_guid
+        WHERE 1=1
+        <if test="warehouseGuid != null and warehouseGuid != ''">
+            AND main.warehouse_guid = #{warehouseGuid}
+        </if>
+        AND bb.state != 81
+    </select>
+
+</mapper>

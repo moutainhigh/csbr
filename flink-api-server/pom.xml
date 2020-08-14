@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>2.1.11.RELEASE</version>
+        <relativePath/> <!-- lookup parent from repository -->
+    </parent>
+    <groupId>com.csbr.cloud</groupId>
+    <artifactId>flink-api-server</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+    <name>flink-api-server</name>
+    <description>business api for flink</description>
+
+    <properties>
+<!--        <java.version>11</java.version>-->
+        <java.version>1.8</java.version>
+        <cabr-package.version>1.0.1-SNAPSHOT</cabr-package.version>
+        <spring-cloud.version>Greenwich.SR2</spring-cloud.version>
+    </properties>
+
+    <dependencies>
+        <!-- csbr云中台自有包 -->
+        <dependency>
+            <groupId>com.csbr.qingcloud</groupId>
+            <artifactId>csbr-cloud-common</artifactId>
+            <version>${cabr-package.version}</version>
+            <!-- 不使用tomcat -->
+            <exclusions>
+                <exclusion>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-starter-tomcat</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <!-- Web服务器使用jetty -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-jetty</artifactId>
+        </dependency>
+
+        <!-- Start 数据库配置，因为需要多个数据源且因为资源问题需要合并微服务，所以没有依赖标准包 -->
+        <!--pagehelper-->
+        <dependency>
+            <groupId>com.github.pagehelper</groupId>
+            <artifactId>pagehelper-spring-boot-starter</artifactId>
+            <version>1.2.3</version>
+            <!--排除冲突jar-->
+            <exclusions>
+                <exclusion>
+                    <groupId>org.mybatis</groupId>
+                    <artifactId>mybatis</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <!--mysql-->
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+        </dependency>
+        <!--mybatis-puls-->
+        <dependency>
+            <groupId>com.baomidou</groupId>
+            <artifactId>mybatis-plus-boot-starter</artifactId>
+            <version>3.2.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.baomidou</groupId>
+            <artifactId>mybatis-plus</artifactId>
+            <version>3.2.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.baomidou</groupId>
+            <artifactId>mybatis-plus-extension</artifactId>
+            <version>3.2.0</version>
+        </dependency>
+        <!--sql打印日志-->
+        <dependency>
+            <groupId>p6spy</groupId>
+            <artifactId>p6spy</artifactId>
+            <version>3.8.6</version>
+        </dependency>
+        <!--atomikos事务管理器-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-jta-atomikos</artifactId>
+        </dependency>
+        <!--主从配置依赖-->
+        <dependency>
+            <groupId>com.baomidou</groupId>
+            <artifactId>dynamic-datasource-spring-boot-starter</artifactId>
+            <version>2.4.2</version>
+        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>com.alibaba</groupId>-->
+<!--            <artifactId>druid-spring-boot-starter</artifactId>-->
+<!--            <version>1.1.10</version>-->
+<!--        </dependency>-->
+        <!-- End 数据库配置 -->
+
+        <dependency>
+            <groupId>com.csbr.qingcloud</groupId>
+            <artifactId>csbr-cloud-swagger</artifactId>
+            <version>${cabr-package.version}</version>
+        </dependency>
+        <!--        <dependency>-->
+        <!--            <groupId>com.csbr.qingcloud</groupId>-->
+        <!--            <artifactId>csbr-cloud-distributelock</artifactId>-->
+        <!--            <version>${cabr-package.version}</version>-->
+        <!--        </dependency>-->
+        <dependency>
+            <groupId>com.csbr.qingcloud</groupId>
+            <artifactId>csbr-cloud-mq</artifactId>
+            <version>${cabr-package.version}</version>
+        </dependency>
+        <!-- zipkin -->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-zipkin</artifactId>
+            <version>2.1.2.RELEASE</version>
+        </dependency>
+        <!-- spring cloud bus 相关  安装rmq打开注释 -->
+        <!-- mq依赖 -->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-bus-amqp</artifactId>
+            <!--            <version>2.1.2.RELEASE</version>-->
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-bus</artifactId>
+<!--            <exclusions>-->
+<!--                <exclusion>-->
+<!--                    <groupId>org.springframework.integration</groupId>-->
+<!--                    <artifactId>spring-integration-core</artifactId>-->
+<!--                </exclusion>-->
+<!--            </exclusions>-->
+<!--            <version>2.1.2.RELEASE</version>-->
+        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>org.springframework.integration</groupId>-->
+<!--            <artifactId>spring-integration-core</artifactId>-->
+<!--            <version>5.1.6.RELEASE</version>-->
+<!--        </dependency>-->
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+<!--            <exclusions>-->
+<!--                <exclusion>-->
+<!--                    <groupId>org.junit.vintage</groupId>-->
+<!--                    <artifactId>junit-vintage-engine</artifactId>-->
+<!--                </exclusion>-->
+<!--            </exclusions>-->
+        </dependency>
+    </dependencies>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-dependencies</artifactId>
+                <version>${spring-cloud.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+    <!--        <repositories>-->
+    <!--            &lt;!&ndash;私服仓库&ndash;&gt;-->
+    <!--            <repository>-->
+    <!--                <id>nexus3</id>-->
+    <!--                <name>Public Repository</name>-->
+    <!--                <url>http://218.106.118.42:18081/repository/csbr-group</url>-->
+    <!--                <releases>-->
+    <!--                    <enabled>true</enabled>-->
+    <!--                </releases>-->
+    <!--                <snapshots>-->
+    <!--                    <enabled>true</enabled>-->
+    <!--                </snapshots>-->
+    <!--            </repository>-->
+    <!--            &lt;!&ndash;阿里仓库&ndash;&gt;-->
+    <!--            <repository>-->
+    <!--                <id>alimaven</id>-->
+    <!--                <name>aliyun maven</name>-->
+    <!--                <url>http://maven.aliyun.com/nexus/content/groups/public/</url>-->
+    <!--            </repository>-->
+    <!--        </repositories>-->
+
+    <build>
+        <finalName>flink-api-server</finalName>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>

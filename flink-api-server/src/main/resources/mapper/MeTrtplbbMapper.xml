@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.csbr.cloud.flink.api.mybatis.medicine.mapper.MeTrtplbbMapper">
+    <!-- 分页返回满足查询条件的物流业务单据汇总信息 -->
+  <select id="searchMeTrtplbbs" parameterType="com.csbr.cloud.flink.api.mybatis.medicine.mapper.so.MeTrtplbbSO" resultType="com.csbr.cloud.flink.api.mybatis.medicine.entity.MeTrtplbb">
+    <![CDATA[
+      SELECT
+        `GUID` AS `guid`,
+        `MainPoGuid` AS `mainPoGuid`,
+        `TenantGuid` AS `tenantGuid`,
+        `CorpGuid` AS `corpGuid`,
+        `CargoOwnerGUID` AS `cargoOwnerGuid`,
+        `CargoOwnerName` AS `cargoOwnerName`,
+        `BBillNo` AS `bBillNo`,
+        `BBillUID` AS `bBillUID`,
+        `BillType` AS `billType`,
+        `IsAuto` AS `isAuto`,
+        `IsCCBB` AS `isCCBB`,
+        `IsCrossDoscking` AS `isCrossDoscking`,
+        `SupplyCorpGUID` AS `supplyCorpGuid`,
+        `SupplyCorpName` AS `supplyCorpName`,
+        `SaleCorpGUID` AS `saleCorpGuid`,
+        `SaleCorpName` AS `saleCorpName`,
+        `BuyerGUID` AS `buyerGuid`,
+        `BuyerName` AS `buyerName`,
+        `TransferOutDCGUID` AS `transferOutDCGuid`,
+        `TransferOutDCName` AS `transferOutDCName`,
+        `TransferOutWHGUID` AS `transferOutWHGuid`,
+        `TransferOutWHName` AS `transferOutWHName`,
+        `TransferInDCGUID` AS `transferInDCGuid`,
+        `TransferInDCName` AS `transferInDCName`,
+        `TransferInWHGUID` AS `transferInWHGuid`,
+        `TransferInWHName` AS `transferInWHName`,
+        `BillDate` AS `billDate`,
+        `PreDeliverDate` AS `preDeliverDate`,
+        `PreArrivalDate` AS `preArrivalDate`,
+        `Address` AS `address`,
+        `PKGS` AS `pkgs`,
+        `Volume` AS `volume`,
+        `Weight` AS `weight`,
+        `CountSum` AS `countSum`,
+        `DetailSum` AS `detailSum`,
+        `InputDate` AS `inputDate`,
+        `RecPKGS` AS `recPKGS`,
+        `CombinMainPoGuid` AS `combinMainPoGuid`,
+        `ReportFlag` AS `reportFlag`,
+        `ReportTime` AS `reportTime`,
+        `OldMainPoGuid` AS `oldMainPoGuid`,
+        `Memo` AS `memo`,
+        `CREATE_TIME` AS `createTime`,
+        `UPDATE_TIME` AS `updateTime`,
+        `CreateUserID` AS `createUserID`,
+        `CreateUserName` AS `createUserName`,
+        `UpdateUserID` AS `updateUserID`,
+        `UpdateUserName` AS `updateUserName`,
+        `DataVersion` AS `dataVersion`,
+        `IsDeleted` AS `isDeleted`,
+        `GoodsSpecNum` AS `goodsSpecNum`,
+        `EvaluationTotal` AS `evaluationTotal`,
+        `WhWorkState` AS `whWorkState`,
+        `WhWorkStartTime` AS `whWorkStartTime`,
+        `PoGUID` AS `poGuid`,
+        `PoBillNo` AS `poBillNo`,
+        `OldBillNo` AS `oldBillNo`,
+        `MedDeptName` AS `medDeptName`,
+        `MedStoreName` AS `medStoreName`,
+        `BusinessType` AS `businessType`,
+        `Origin` AS `origin`,
+        `RequisitionOrigin` AS `requisitionOrigin`,
+        `RequisitionMode` AS `requisitionMode`,
+        `IsReturn` AS `isReturn`,
+        `IsSyncInvoice` AS `isSyncInvoice`,
+        `InvoiceState` AS `invoiceState`,
+        `InvoiceGuids` AS `invoiceGuids`,
+        `IsUrgent` AS `isUrgent`,
+        `PayStatus` AS `payStatus`,
+        `SchedulingBatchNo` AS `schedulingBatchNo`,
+        `WhDispatcherState` AS `whDispatcherState`,
+        `WaitShippingArea` AS `waitShippingArea`,
+        `IsMedOrder` AS `isMedOrder`,
+        `NewMainPoGuid` AS `newMainPoGuid`
+      FROM `trtplbb`
+    ]]>
+    <include refid="searchConditions" />
+    <![CDATA[
+      ORDER BY `GUID` DESC
+    ]]>
+  </select>
+
+  <!-- 查询条件 -->
+  <sql id="searchConditions">
+    <where>
+      <if test="mainPoGuid!=null and mainPoGuid!=''">
+        <![CDATA[ and `MainPoGuid`=#{mainPoGuid} ]]>
+      </if>
+      <if test="isMedOrder!=null and isMedOrder!=''">
+        <![CDATA[ and `IsMedOrder`=#{isMedOrder} ]]>
+      </if>
+    </where>
+  </sql>
+</mapper>

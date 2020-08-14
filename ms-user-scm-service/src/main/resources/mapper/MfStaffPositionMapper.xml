@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.csbr.qingcloud.user.scm.mybatis.mapper.MfStaffPositionMapper">
+        <!-- 分页返回满足查询条件的人员岗位信息 -->
+    <select id="mapperPageMfStaffPositions" resultType="com.csbr.qingcloud.user.scm.mybatis.entity.MfStaffPosition">
+      <![CDATA[
+        SELECT
+          `create_time` AS `createTime`,
+          `create_user_id` AS `createUserId`,
+          `create_user_name` AS `createUserName`,
+          `guid` AS `guid`,
+          `position_guid` AS `positionGuid`,
+          `staff_guid` AS `staffGuid`,
+          `tenant_guid` AS `tenantGuid`,
+          `update_time` AS `updateTime`,
+          `update_user_id` AS `updateUserId`,
+          `update_user_name` AS `updateUserName`
+        FROM `mf_staff_position`
+      ]]>
+      <include refid="searchConditions" />
+      <![CDATA[
+        ORDER BY `guid` DESC
+      ]]>
+    </select>
+    
+      <!-- 查询条件 -->
+    <sql id="searchConditions">
+      <where>
+        <if test="so.staffGuid != null and so.staffGuid != ''">
+          <![CDATA[ and `staff_guid`=#{so.staffGuid} ]]>
+        </if>
+      </where>
+    </sql>
+
+    <select id="getStaffPositionNames" resultType="com.csbr.qingcloud.user.scm.mybatis.mapper.pojo.MfStaffPositionPOJO">
+        <![CDATA[
+       select a.staff_guid as staffGuid,
+			  a.position_guid as positionGuid,
+		      b.position_name as positionName
+            from mf_staff_position a,mf_position b
+            where a.position_guid=b.guid
+            and a.staff_guid in
+        <foreach collection="guids" item="guid" open="(" close=")" index="index" separator=",">
+            #{guid}
+        </foreach>
+
+      ]]>
+
+    </select>
+    </mapper>

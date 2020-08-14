@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.csbr.qingcloud.common.admin.platform_auth.mybatis.mapper.MfProductMapper">
+        <!-- 分页返回满足查询条件的产品信息信息 -->
+    <select id="mapperPageMfProducts" resultType="com.csbr.qingcloud.common.admin.platform_auth.mybatis.entity.MfProduct">
+      <![CDATA[
+        SELECT
+          `guid` AS `guid`,
+          `product_name` AS `productName`,
+          `mananger` AS `mananger`,
+          `mananger_contact_tel` AS `manangerContactTel`,
+          `operation_party` AS `operationParty`,
+          `operation_contacts` AS `operationContacts`,
+          `operation_contact_tel` AS `operationContactTel`,
+          `up_time` AS `upTime`,
+          `platform_guid` AS `platformGuid`,
+          `biz_state` AS `bizState`,
+          `create_user_id` AS `createUserId`,
+          `create_user_name` AS `createUserName`,
+          `update_user_id` AS `updateUserId`,
+          `update_user_name` AS `updateUserName`,
+          `create_time` AS `createTime`,
+          `update_time` AS `updateTime`,
+          `is_deleted` AS `isDeleted`
+        FROM `mf_product`
+      ]]>
+      <include refid="searchConditions" />
+      <![CDATA[
+        ORDER BY `guid` DESC
+      ]]>
+    </select>
+    
+      <!-- 查询条件 -->
+    <sql id="searchConditions">
+      <where>
+        <if test="so.productName != null and so.productName != ''">
+          <![CDATA[ and `product_name`=#{so.productName} ]]>
+        </if>
+      </where>
+    </sql>
+    </mapper>

@@ -1,0 +1,190 @@
+server:
+  port: 9001
+#服务全局名称
+spring:
+  application:
+    name: ms-user-scm-service
+  cloud:
+    inetutils:
+      ignored-interfaces: docker0  # 让应用忽略docker0网卡
+  data:
+    elasticsearch:
+      repositories:
+        enabled: true
+  elasticsearch:
+    rest:
+      uris: ["http://139.9.190.186:9200"]
+      username: elastic
+      password: zhangheng
+  zipkin:
+    sender:
+      type: kafka
+  sleuth:
+    sampler:
+      probability: 0.1
+  kafka:
+    bootstrap-servers: kafka1.com:9092,kafka1.com:9093,kafka1.com:9094
+    producer:
+      retries: 3
+  datasource:
+    sql-script-encoding: utf-8
+    #type: org.apache.commons.dbcp2.BasicDataSource
+    #如果使用TCC事务这个type必须指定，否则会抛出： org.springframework.jdbc.CannotGetJdbcConnectionException:  Failed  to  obtain  JDBC  Connection;
+    dynamic:
+      primary: master
+      druid:
+        initial-size: 0
+        max-active: 8
+        min-idle: 2
+        max-wait: -1
+        min-evictable-idle-time-millis: 30000
+        max-evictable-idle-time-millis: 30000
+        time-between-eviction-runs-millis: 0
+        validation-query: select 1
+        validation-query-timeout: -1
+        test-on-borrow: false
+        test-on-return: false
+        test-while-idle: true
+        pool-prepared-statements: true
+#        max-open-prepared-statements: 100
+        filters: stat,wall
+        share-prepared-statements: true
+      ##由mycat管理读写分离 不用代码控制(填写mycat的链接库)
+      datasource:
+        master:
+          url: jdbc:mysql://192.168.5.4:3306/csbr_scm_data?useUnicode=true&characterEncoding=UTF-8&useSSL=false&autoReconnect=true&serverTimezone=Asia/Shanghai
+          username: root
+          password: root
+          driver-class-name: com.mysql.cj.jdbc.Driver
+          druid:
+            initial-size: 5
+        slave:
+          url: jdbc:mysql://192.168.4.4:3306/csbr_scm_data?useUnicode=true&characterEncoding=UTF-8&useSSL=false&autoReconnect=true&serverTimezone=Asia/Shanghai
+          username: root
+          password: root
+          driver-class-name: com.mysql.cj.jdbc.Driver
+          druid:
+            initial-size: 5
+  # redis配置
+  redis:
+    host: 218.106.118.42
+    port: 10001
+    password: chuangshi@2017#
+    timeout: 1000
+    database: 4
+  messages:
+    basename: i18n/messages
+
+redisson:
+  address: redis://218.106.118.42:10001
+  password: chuangshi@2017#
+
+seata:
+  enabled: true # 1.0新特性，需要依赖seata-spring-boot-starter,默认为true
+  tx-service-group: my_test_tx_group
+  application-id: ms-user-scm-service
+  #  enable-auto-data-source-proxy: true # 开启数据源自动代理
+  registry:
+    type: eureka
+    #    nacos:
+    #      application: seata-server
+    #      cluster: default
+    #      server-addr: 49.4.23.228:8848
+    #      #      password: nacos
+    #      #      username: nacos
+    #      namespace:
+    eureka:
+      application: ms-user-scm-service
+      weight: 1
+      service-url: http://192.168.5.4:8761/eureka
+  service:
+    vgroupMapping:
+      my_test_tx_group: seata-server
+    grouplist:
+      default: 192.168.4.4:8091
+##eureka配置
+eureka:
+  # 修改在服务中心的地址status为 ip+端口 【例如：10.0.0.100:88】
+  instance:
+    prefer-ip-address: true
+    instance-id: ${spring.application.name}:${eureka.instance.non-secure-port}
+    leaseRenewalIntervalInSeconds: 10
+    health-check-url-path: /actuator/health
+    #设置外网IP号
+#    ip-address: 192.168.5.4
+    #设置外网端口号
+    non-secure-port: ${server.port}
+#    metadata-map:
+#      user.name: ${spring.security.user.name}
+#      user.password: ${spring.security.user.password}
+  client:
+    registryFetchIntervalSeconds: 5
+    serviceUrl:
+      defaultZone: http://192.168.5.4:8761/eureka/
+##mybatsipuls
+#数据库字段开启驼峰
+mybatis:
+  configuration:
+    map-underscore-to-camel-case: true
+    callSettersOnNulls: true
+mybatis-plus:
+  global-config:
+    db-config:
+      id-type: uuid
+      logic-delete-value: Y
+      logic-not-delete-value: N
+  mapper-locations: classpath:/mapper/**/*Mapper.xml
+  type-aliases-package: com.csbr.qingcloud.user.scm.mybatis
+  ##生产环境屏蔽此配置 优化性能
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+pagehelper:
+  helperDialect: mysql
+  reasonable: true
+  supportMethodsArguments: true
+  params: count=countSql
+
+csbr:
+  kafka:
+    consumer:
+      # 开启kafka消费者
+      enable: true
+      # kafka 服务集群地址，格式：HOST:PORT ,用逗号隔开
+      #      bootstrap-servers: 210.12.100.201:9092
+      bootstrap-servers: kafka1.com:9092,kafka1.com:9093,kafka1.com:9094
+      #      bootstrap-servers: 192.168.3.120:9092
+      # 是否启用自动提交 offset
+      enable-auto-commit: false
+      # 自动提交间隔时间(MS)，仅在自动提交开启时有效
+      auto-commit-interval: 100
+      # 消费组id
+      group-id: kcid.zs.spring
+      # 自动重置 offset。 latest：从最后开始，earliest: 从 offset 为 0 开始
+      auto-offset-reset: latest
+      # 消息 key 的反序列化方法
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      # 消息 value 的反序列化方法
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      # listener 开启的线程数
+      concurrency: 2
+      # session 超时时间
+      session-timeout: 60000
+      # 最大 poll 消息间隔时间，如果处理时间过长会导致异常
+      max-poll-interval: 10000
+      # 最大 poll 消息数量
+      max-poll-records: 2
+    producer:
+      # 开启kafka生产者
+      enable: true
+      # kafka 服务集群地址，格式：HOST:PORT ,多地址用逗号隔开
+      #      bootstrap-servers: 210.12.100.201:9092
+      bootstrap-servers: kafka1.com:9092,kafka1.com:9093,kafka1.com:9094
+      #      bootstrap-servers: 192.168.3.120:9092
+      # 失败后的重发次数
+      retries: 0
+      # 一次最多发送的数据量
+      batch-size: 4096
+      # 32M批处理缓冲区
+      buffer-memory: 33554432
+      # 生产者生产消息间隔，数值越大，间隔越长，用来减缓消费压力
+      linger: 1

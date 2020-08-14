@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.csbr.qingcloud.common.admin.platform_auth.mybatis.mapper.MfRoleMenuMapper">
+        <!-- 分页返回满足查询条件的角色菜单信息 -->
+    <select id="mapperPageMfRoleMenus" resultType="com.csbr.qingcloud.common.admin.platform_auth.mybatis.entity.MfRoleMenu">
+      <![CDATA[
+        SELECT
+          `guid` AS `guid`,
+          `role_guid` AS `roleGuid`,
+          `menu_guid` AS `menuGuid`,
+          `create_user_id` AS `createUserId`,
+          `create_user_name` AS `createUserName`,
+          `update_user_id` AS `updateUserId`,
+          `update_user_name` AS `updateUserName`,
+          `create_time` AS `createTime`,
+          `update_time` AS `updateTime`
+        FROM `mf_role_menu`
+      ]]>
+      <include refid="searchConditions" />
+      <![CDATA[
+        ORDER BY `guid` DESC
+      ]]>
+    </select>
+    
+      <!-- 查询条件 -->
+    <sql id="searchConditions">
+      <where>
+        <if test="so.roleGuid != null and so.roleGuid != ''">
+          <![CDATA[ and `role_guid`=#{so.roleGGuid} ]]>
+        </if>
+        <if test="so.menuGuid != null and so.menuGuid != ''">
+          <![CDATA[ and `menu_guid`=#{so.menuGGuid} ]]>
+        </if>
+      </where>
+    </sql>
+    <select id="getRoleMenus" resultType="com.csbr.qingcloud.common.admin.platform_auth.mybatis.mapper.pojo.MfRoleMenuPOJO"
+            parameterType="java.lang.String">
+        <![CDATA[
+          SELECT
+          a.`guid` AS `guid`,
+          a.`platform_guid` AS `platformGuid`,
+          a.`app_side_guid` AS `appSideGuid`,
+          a.`product_guid` AS `productGuid`,
+          b.`product_name` AS `productName`,
+          a.`parent_guid` AS `parentGuid`,
+          a.`menu_name` AS `menuName`,
+          a.`path` AS `path`,
+          a.`component` AS `component`,
+          a.`action` AS `action`,
+          a.`icon` AS `icon`,
+          a.`order_num` AS `orderNum`,
+          a.`menu_type` AS `menuType`,
+          a.`visible` AS `visible`,
+          a.`biz_state` AS `bizState`,
+          a.`is_external_link` AS `isExternalLink`,
+          a.`perms` AS `perms`,
+          a.`create_user_id` AS `createUserId`,
+          a.`create_user_name` AS `createUserName`,
+          a.`update_user_id` AS `updateUserId`,
+          a.`update_user_name` AS `updateUserName`,
+          a.`create_time` AS `createTime`,
+          a.`update_time` AS `updateTime`
+        FROM `mf_menu` a inner join `mf_product` b on a.product_guid=b.guid
+		INNER JOIN `mf_role_menu` c on a.guid=c.menu_guid
+      ]]>
+        <where>
+            c.role_guid=#{guid}
+        </where>
+        <![CDATA[
+        ORDER BY a.`product_guid`,a.parent_guid,a.order_num,a.create_time
+      ]]>
+    </select>
+
+    </mapper>

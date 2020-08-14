@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.csbr.qingcloud.common.admin.platform_auth.mybatis.mapper.MfRoleMapper">
+        <!-- 分页返回满足查询条件的角色信息 -->
+    <select id="mapperPageMfRoles" resultType="com.csbr.qingcloud.common.admin.platform_auth.mybatis.entity.MfRole">
+      <![CDATA[
+        SELECT
+          `guid` AS `guid`,
+          `platform_guid` AS `platformGuid`,
+          `app_side_guid` AS `appSideGuid`,
+          `tenant_guid` AS `tenantGuid`,
+          `role_name` AS `roleName`,
+          `order_num` AS `orderNum`,
+          `biz_state` AS `bizState`,
+          `create_user_id` AS `createUserId`,
+          `create_user_name` AS `createUserName`,
+          `update_user_id` AS `updateUserId`,
+          `update_user_name` AS `updateUserName`,
+          `create_time` AS `createTime`,
+          `update_time` AS `updateTime`,
+          `is_deleted` AS `isDeleted`
+        FROM `mf_role`
+      ]]>
+      <include refid="searchConditions" />
+      <![CDATA[
+        ORDER BY `guid` DESC
+      ]]>
+    </select>
+    
+      <!-- 查询条件 -->
+    <sql id="searchConditions">
+      <where>
+        <if test="so.platformGuid != null and so.platformGuid != ''">
+          <![CDATA[ and `platform_guid`=#{so.platformGGuid} ]]>
+        </if>
+        <if test="so.appSideGuid != null and so.appSideGuid != ''">
+          <![CDATA[ and `app_side_guid`=#{so.appSideGuGuid} ]]>
+        </if>
+        <if test="so.roleName != null and so.roleName != ''">
+          <![CDATA[ and `role_name`=#{so.roleName} ]]>
+        </if>
+      </where>
+    </sql>
+
+    </mapper>

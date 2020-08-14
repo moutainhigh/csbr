@@ -1,32 +1,29 @@
 spring:
   cloud:
-    config:
-      uri: http://user:123456@49.4.23.228:8888/
-      profile: dev
-      label: master
-#---
-#spring:
-#  cloud:
-#    config:
-#      uri: http://user:123456@127.0.0.1:8888/
-#      profile: pro
-#      label: master
+    nacos:
+      #配置中心
+      config:
+        server-addr: 192.168.5.4:8848
+        file-extension: yaml
+        group: dev
   boot:
     admin:
       client:
-        url: http://49.4.23.228:7086
+        url: http://192.168.5.4:7086
         instance:
           prefer-ip: true
 #        username: admin
 #        password: admin
-#---
-#spring:
-#  cloud:
-#    config:
-#      uri: http://user:123456@127.0.0.1:8888/
-#      profile: sh-pro
-#      label: master
-#  boot:
-#    admin:
-#      client:
-#        url: http://127.0.0.1:7086
+##admin监控配置
+management:
+#  metrics:
+#    web:
+#      server:
+#        auto-time-requests: false
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+  endpoint:
+    health:
+      show-details: always

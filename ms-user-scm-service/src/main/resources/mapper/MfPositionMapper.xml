@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.csbr.qingcloud.user.scm.mybatis.mapper.MfPositionMapper">
+        <!-- 分页返回满足查询条件的岗位信息 -->
+    <select id="mapperPageMfPositions" resultType="com.csbr.qingcloud.user.scm.mybatis.entity.MfPosition">
+      <![CDATA[
+        SELECT
+          `biz_state` AS `bizState`,
+          `create_time` AS `createTime`,
+          `create_user_id` AS `createUserId`,
+          `create_user_name` AS `createUserName`,
+          `guid` AS `guid`,
+          `is_deleted` AS `isDeleted`,
+          `order_num` AS `orderNum`,
+          `position_name` AS `positionName`,
+          `position_people_num` AS `positionPeopleNum`,
+          `tenant_guid` AS `tenantGuid`,
+          `update_time` AS `updateTime`,
+          `update_user_id` AS `updateUserId`,
+          `update_user_name` AS `updateUserName`
+        FROM `mf_position`
+      ]]>
+      <include refid="searchConditions" />
+      <![CDATA[
+        ORDER BY `guid` DESC
+      ]]>
+    </select>
+    
+      <!-- 查询条件 -->
+    <sql id="searchConditions">
+      <where>
+        <if test="so.tenantGuid != null and so.tenantGuid != ''">
+          <![CDATA[ and `tenant_guid`=#{so.tenantGuid} ]]>
+        </if>
+      </where>
+    </sql>
+    </mapper>

@@ -1,0 +1,60 @@
+pipeline {
+    agent any
+    //maven代理（直接从官网拉取maven镜像）
+    //agent {
+        //docker {
+            //image 'maven:3-alpine'
+            //args '-v /root/.m2:/root/.m2'
+        //}
+    //}
+    //环境定义
+    environment{
+
+        def SVN_FOLD = "seata-cloud"
+    }
+    //定时任务
+    //triggers { pollSCM('H 4/* 0 0 1-5') }
+    //triggers {
+        //每天凌晨2点自动构建
+    //    cron('H 2 * * *')
+    //}
+     options {
+            // 设置保留的最大历史构建数为6
+        buildDiscarder(logRotator(numToKeepStr: '6'))
+     }
+    //全局定义工具
+    tools {
+        //工具名称必须在Jenkins 管理Jenkins → 全局工具配置中预配置。
+        maven 'maven3'
+    }
+    stages {
+        //构建
+        stage('Build') {
+            steps {
+                //sh './gradlew build'
+                 //执行shell命令 mvn package -pl ${your.project.name} -am
+                 //sh 'mvn -f ./pom.xml clean install -Dmaven.test.skip=true -X'
+                 sh 'mvn -f ./pom.xml clean deploy -Dmaven.test.skip=true -X'
+                 //sh 'mvn -f ${SVN_FOLD}/pom.xml clean package'
+            }
+        }
+        //测试(暂时不用)
+        //stage('Test') {
+            //steps {
+                //sh './gradlew check'
+                //sh 'mvn -f $SVN_FOLD/pom.xml test'
+                //sh 'mvn -f $SVN_FOLD/pom.xml test'
+            //}
+        //}
+    }
+
+    //归档
+    //post {
+        //always {
+            //echo 'Archive artifacts'
+            //archiveArtifacts artifacts: "${SVN_FOLD}/target/*.jar", excludes: "${SVN_FOLD}/target"
+        //}
+    //}
+
+
+}

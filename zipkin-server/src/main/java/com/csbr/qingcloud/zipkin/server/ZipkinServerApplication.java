@@ -2,7 +2,6 @@ package com.csbr.qingcloud.zipkin.server;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
@@ -16,19 +15,12 @@ import zipkin2.server.internal.EnableZipkinServer;
 @SpringBootApplication
 @EnableZipkinServer
 @EnableEurekaClient
-public class ZipkinServerApplication implements CommandLineRunner {
+public class ZipkinServerApplication {
 
-    private final static Logger logger= LoggerFactory.getLogger(ZipkinServerApplication.class);
+//    private final static Logger logger= LoggerFactory.getLogger(ZipkinServerApplication.class);
 
     public static void main(String[] args) {
         SpringApplication.run(ZipkinServerApplication.class, args);
     }
 
-    @Override
-    public void run(String... args) throws Exception {
-        for (int i = 0; i <99 ; i++) {
-            logger.info("=========hello World ELK========");
-        }
-
-    }
 }

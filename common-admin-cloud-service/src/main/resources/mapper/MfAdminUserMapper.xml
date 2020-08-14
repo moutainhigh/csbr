@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.csbr.qingcloud.common.admin.cloud.mybatis.mapper.MfAdminUserMapper">
+        <!-- 分页返回满足查询条件的平台用户信息 -->
+    <select id="mapperPageMfAdminUsers" resultType="com.csbr.qingcloud.common.admin.cloud.mybatis.entity.MfAdminUser">
+      <![CDATA[
+        SELECT
+          `guid` AS `guid`,
+          `logon_user` AS `logonUser`,
+          `pwd` AS `pwd`,
+          `registration_code` AS `registrationCode`,
+          `name` AS `name`,
+          `biz_state` AS `bizState`,
+          `mobile_no` AS `mobileNo`,
+          `service_sign` AS `serviceSign`,
+          `platform_guid` AS `platformGuid`,
+          `remark` AS `remark`,
+          `is_locked` AS `isLocked`,
+          `login_error_count` AS `loginErrorCount`,
+          `last_login_time` AS `lastLoginTime`,
+          `varchar1` AS `varchar1`,
+          `varchar2` AS `varchar2`,
+          `varchar3` AS `varchar3`,
+          `varchar4` AS `varchar4`,
+          `num1` AS `num1`,
+          `num2` AS `num2`,
+          `num3` AS `num3`,
+          `date1` AS `date1`,
+          `date2` AS `date2`,
+          `date3` AS `date3`,
+          `create_user_id` AS `createUserId`,
+          `create_user_name` AS `createUserName`,
+          `update_user_id` AS `updateUserId`,
+          `update_user_name` AS `updateUserName`,
+          `create_time` AS `createTime`,
+          `update_time` AS `updateTime`,
+          `is_deleted` AS `isDeleted`
+        FROM `mf_admin_user` a
+      ]]>
+      <include refid="searchConditions" />
+      <![CDATA[
+        ORDER BY `guid` DESC
+      ]]>
+    </select>
+    
+      <!-- 查询条件 -->
+    <sql id="searchConditions">
+      <where>
+          <if test="so.guid != null and so.guid != ''">
+              <![CDATA[ and a.`guid`=#{so.guid} ]]>
+          </if>
+        <if test="so.logonUser != null and so.logonUser != ''">
+          <![CDATA[ and a.`logon_user` like concat(#{so.logonUser},'%') ]]>
+        </if>
+        <if test="so.pwd != null and so.pwd != ''">
+          <![CDATA[ and a.`pwd`=#{so.pwd} ]]>
+        </if>
+          <if test="so.name != null and so.name != ''">
+              <![CDATA[ and a.`name` like concat(#{so.name},'%') ]]>
+          </if>
+          <if test="so.mobileNo != null and so.mobileNo != ''">
+              <![CDATA[ and a.`mobile_no` like concat(#{so.mobileNo},'%') ]]>
+          </if>
+          <if test="so.platformGuid != null and so.platformGuid != ''">
+              <![CDATA[ and a.`platform_guid` =#{so.platformGuid} ]]>
+          </if>
+          <if test="so.startTime != null ">
+              <![CDATA[ and a.`create_time` >=#{so.startTime} ]]>
+          </if>
+          <if test="so.endTime != null ">
+              <![CDATA[ and a.`create_time` <=#{so.endTime} ]]>
+          </if>
+      </where>
+    </sql>
+
+    <select id="getDataWithPlatformName" resultType="com.csbr.qingcloud.common.admin.cloud.mybatis.entity.MfAdminUser">
+        <![CDATA[
+        SELECT
+          a.`guid` AS `guid`,
+          a.`logon_user` AS `logonUser`,
+          a.`pwd` AS `pwd`,
+          a.`registration_code` AS `registrationCode`,
+          a.`name` AS `name`,
+          a.`biz_state` AS `bizState`,
+          a.`mobile_no` AS `mobileNo`,
+          a.`service_sign` AS `serviceSign`,
+          a.`platform_guid` AS `platformGuid`,
+          b.`platform_name` AS `platformName`,
+          a.`is_init` as `isInit`,
+          a.`remark` AS `remark`,
+          a.`is_locked` AS `isLocked`,
+          a.`login_error_count` AS `loginErrorCount`,
+          a.`last_login_time` AS `lastLoginTime`,
+          a.`varchar1` AS `varchar1`,
+          a.`varchar2` AS `varchar2`,
+          a.`varchar3` AS `varchar3`,
+          a.`varchar4` AS `varchar4`,
+          a.`num1` AS `num1`,
+          a.`num2` AS `num2`,
+          a.`num3` AS `num3`,
+          a.`date1` AS `date1`,
+          a.`date2` AS `date2`,
+          a.`date3` AS `date3`,
+          a.`create_user_id` AS `createUserId`,
+          a.`create_user_name` AS `createUserName`,
+          a.`update_user_id` AS `updateUserId`,
+          a.`update_user_name` AS `updateUserName`,
+          a.`create_time` AS `createTime`,
+          a.`update_time` AS `updateTime`,
+          a.`is_deleted` AS `isDeleted`
+        FROM `mf_admin_user` a left join mf_platform b on a.platform_guid=b.guid
+      ]]>
+
+        <include refid="searchConditions" />
+
+
+        <![CDATA[
+        ORDER BY `guid`
+      ]]>
+    </select>
+
+    </mapper>

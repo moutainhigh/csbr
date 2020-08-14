@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.csbr.qingcloud.user.scm.mybatis.data.mapper.TrSalesFlowMapper">
+        <!-- 分页返回满足查询条件的销售流量信息 -->
+    <select id="mapperPageTrSalesFlows" resultType="com.csbr.qingcloud.user.scm.mybatis.data.entity.TrSalesFlow">
+      <![CDATA[
+        SELECT
+          a.`city` AS `city`,
+          a.`corp_name` AS `corpName`,
+          a.`create_time` AS `createTime`,
+          a.`create_user_id` AS `createUserId`,
+          a.`create_user_name` AS `createUserName`,
+          a.`customer_guid` AS `customerGuid`,
+          a.`customer_code` AS `customerCode`,
+          a.`customer_name` AS `customerName`,
+          a.`district` AS `district`,
+          a.`guid` AS `guid`,
+          a.`manager_guid` AS `managerGuid`,
+          a.`manager_job_number` AS `managerJobNumber`,
+          a.`manager_name` AS `managerName`,
+          a.`goods_spec_num` AS `goodsSpecNum`,
+          a.`lot_num` AS `lotNum`,
+          a.`total_qty` AS `totalQty`,
+          a.`total_accounting_amount` AS `totalAccountingAmount`,
+          a.`organisation_guid` AS `organisationGuid`,
+          a.`organisation_code` AS `organisationCode`,
+          a.`organisation_name` AS `organisationName`,
+          a.`province` AS `province`,
+          a.`sales_date` AS `salesDate`,
+          a.`staff_guid` AS `staffGuid`,
+          a.`staff_job_number` AS `staffJobNumber`,
+          a.`staff_name` AS `staffName`,
+          a.`terminal_property` AS `terminalProperty`,
+          a.`update_time` AS `updateTime`,
+          a.`update_user_id` AS `updateUserId`,
+          a.`update_user_name` AS `updateUserName`,
+          a.`venue` AS `venue`,
+          a.`tenant_guid` AS `tenantGuid`
+        FROM `tr_sales_flow` a
+      ]]>
+      <include refid="searchConditions" />
+      <![CDATA[
+        ORDER BY `guid` DESC
+      ]]>
+    </select>
+    
+      <!-- 查询条件 -->
+    <sql id="searchConditions">
+      <where>
+        <if test="so.goodsCode != null and so.goodsCode != ''">
+          <![CDATA[ and b.`goods_code`=#{so.goodsCode} ]]>
+        </if>
+          <if test="so.tenantGuid != null and so.tenantGuid != ''">
+              <![CDATA[ and a.`tenant_guid`=#{so.goodsCode} ]]>
+          </if>
+          <if test="so.customerName != null and so.customerName != ''">
+              <![CDATA[ and a.`customer_name` like concat(#{so.customerName},'%') ]]>
+          </if>
+          <if test="so.goodsName != null and so.goodsName != ''">
+              <![CDATA[ and b.`goods_name`=#{so.goodsName} ]]>
+          </if>
+          <if test="so.startSalesDate != null">
+              <![CDATA[ and a.`sale_date`>=#{so.startSalesDate} ]]>
+          </if>
+          <if test="so.endSaleDate != null">
+              <![CDATA[ and a.`sale_date`=#{so.endSaleDate} ]]>
+          </if>
+      </where>
+    </sql>
+
+    <select id="getTrSalesFlowsWithDetail" resultType="com.csbr.qingcloud.user.scm.mybatis.data.mapper.pojo.SalesFlowWithDetailPOJO">
+        <![CDATA[
+        SELECT
+          a.`city` AS `city`,
+          a.`corp_name` AS `corpName`,
+          a.`create_time` AS `createTime`,
+          a.`create_user_id` AS `createUserId`,
+          a.`create_user_name` AS `createUserName`,
+          a.`customer_guid` AS `customerGuid`,
+          a.`customer_code` AS `customerCode`,
+          a.`customer_name` AS `customerName`,
+          a.`district` AS `district`,
+          a.`guid` AS `guid`,
+          a.`manager_guid` AS `managerGuid`,
+          a.`manager_job_number` AS `managerJobNumber`,
+          a.`manager_name` AS `managerName`,
+          a.`goods_spec_num` AS `goodsSpecNum`,
+          a.`lot_num` AS `lotNum`,
+          a.`total_qty` AS `totalQty`,
+          a.`total_accounting_amount` AS `totalAccountingAmount`,
+          a.`organisation_guid` AS `organisationGuid`,
+          a.`organisation_code` AS `organisationCode`,
+          a.`organisation_name` AS `organisationName`,
+          a.`province` AS `province`,
+          a.`sales_date` AS `salesDate`,
+          a.`staff_guid` AS `staffGuid`,
+          a.`staff_job_number` AS `staffJobNumber`,
+          a.`staff_name` AS `staffName`,
+          a.`terminal_property` AS `terminalProperty`,
+          a.`update_time` AS `updateTime`,
+          a.`update_user_id` AS `updateUserId`,
+          a.`update_user_name` AS `updateUserName`,
+          a.`venue` AS `venue`,
+          a.`tenant_guid` AS `tenantGuid`,
+          b.`goods_code` AS `goodsCode`,
+          b.`goods_name` AS `goodsName`,
+          b.`lot` AS `lot`,
+          b.`goods_spec` AS `goodsSpec`,
+          b.`qty` AS `qty`,
+          b.`accounting_price` AS `accountingPrice`,
+          b.`out_price` AS `outPrice`,
+          b.`accounting_amount` AS `accountingAmount`,
+          b.`out_amount` AS `outAmount`
+
+        FROM `tr_sales_flow` a inner join `tr_sales_flow_detail` b on a.guid=b.sales_flow_guid
+      ]]>
+        <include refid="searchConditions" />
+        <![CDATA[
+        ORDER BY a.`sale_date` DESC
+      ]]>
+    </select>
+
+    <select id="getCustomerWithAmount" resultType="java.util.HashMap">
+        <![CDATA[
+        SELECT
+          a.`customer_guid` AS `customerGuid`,
+          sum(b.`accounting_amount`) AS `summaryAccountingAmount`
+
+        FROM `tr_sales_flow` a inner join `tr_sales_flow_detail` b on a.guid=b.sales_flow_guid
+      ]]>
+        <include refid="searchConditions" />
+        <![CDATA[
+        group by a.`customer_guid`
+      ]]>
+    </select>
+
+    <select id="getGoodsNum" resultType="java.lang.Integer">
+        <![CDATA[
+        SELECT
+        count(DISTINCT(b.goods_code)) as goodsNum
+
+        FROM `tr_sales_flow` a inner join `tr_sales_flow_detail` b on a.guid=b.sales_flow_guid
+      ]]>
+        <include refid="searchConditions" />
+
+    </select>
+    </mapper>

@@ -1,0 +1,25 @@
+package com.csbr.qingcloud.user.scm.mybatis.data.service;
+
+import com.csbr.cloud.mybatis.entity.BasePageDTO;
+import com.csbr.cloud.mybatis.entity.PageListVO;
+import com.csbr.cloud.mybatis.service.CsbrService;
+
+import com.csbr.qingcloud.user.scm.mybatis.data.entity.TrCustomerSalesIndicatorsDetail;
+import com.csbr.qingcloud.user.scm.mybatis.data.mapper.so.TrCustomerSalesIndicatorsDetailSO;
+import com.csbr.qingcloud.user.scm.mybatis.data.mapper.TrCustomerSalesIndicatorsDetailMapper;
+
+/**
+ * 客户销售指标明细业务逻辑.
+ *
+ * @author Huanglh
+ * @since 2020-08-13
+ */
+
+public interface TrCustomerSalesIndicatorsDetailService extends CsbrService<TrCustomerSalesIndicatorsDetail> {
+    /**
+     * 获取mapper分页查询链表
+     *
+     * @return 结果链表
+     */
+    <D extends BasePageDTO> PageListVO getMapperPageList(D so);
+}

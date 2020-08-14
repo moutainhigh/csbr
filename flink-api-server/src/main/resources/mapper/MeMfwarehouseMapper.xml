@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.csbr.cloud.flink.api.mybatis.medicine.mapper.MeMfwarehouseMapper">
+    <!-- 分页返回满足查询条件的仓库资料信息 -->
+  <select id="searchMeMfwarehouses" parameterType="com.csbr.cloud.flink.api.mybatis.medicine.mapper.so.MeMfwarehouseSO" resultType="com.csbr.cloud.flink.api.mybatis.medicine.entity.MeMfwarehouse">
+    <![CDATA[
+      SELECT
+        `GUID` AS `guid`,
+        `TenantGUID` AS `tenantGuid`,
+        `CorpGUID` AS `corpGuid`,
+        `CorpName` AS `corpName`,
+        `WarehouseCorpGUID` AS `warehouseCorpGuid`,
+        `WarehouseCorpName` AS `warehouseCorpName`,
+        `LogCenterGUID` AS `logCenterGuid`,
+        `LogCenterName` AS `logCenterName`,
+        `ChineseName` AS `chineseName`,
+        `HelpCode` AS `helpCode`,
+        `Abbreviation` AS `abbreviation`,
+        `LogAreaGUID` AS `logAreaGuid`,
+        `LogAreaName` AS `logAreaName`,
+        `BizState` AS `bizState`,
+        `Province` AS `province`,
+        `City` AS `city`,
+        `District` AS `district`,
+        `Address` AS `address`,
+        `Mananger` AS `mananger`,
+        `SHInfor` AS `sHInfor`,
+        `ALInfo` AS `aLInfo`,
+        `Einfo` AS `einfo`,
+        `TotalAreaAge` AS `totalAreaAge`,
+        `TotalVolume` AS `totalVolume`,
+        `CanRentedArea` AS `canRentedArea`,
+        `Minleasedrea` AS `minleasedrea`,
+        `WareHouseType` AS `wareHouseType`,
+        `LeasingWay` AS `leasingWay`,
+        `LeasingPrice` AS `leasingPrice`,
+        `Platform` AS `platform`,
+        `FireFighting` AS `fireFighting`,
+        `BuildingStructure` AS `buildingStructure`,
+        `FloorHeight` AS `floorHeight`,
+        `ServiceRange` AS `serviceRange`,
+        `GoodsCategory` AS `goodsCategory`,
+        `SecuritySystem` AS `securitySystem`,
+        `FireFightingSystem` AS `fireFightingSystem`,
+        `WarehouseNature` AS `warehouseNature`,
+        `Capacity` AS `capacity`,
+        `CapacityUnit` AS `capacityUnit`,
+        `StorageType` AS `storageType`,
+        `ISGSP` AS `isgsp`,
+        `ISGMP` AS `isgmp`,
+        `ISGAP` AS `isgap`,
+        `Contacts` AS `contacts`,
+        `ContactTel` AS `contactTel`,
+        `Mailaddr` AS `mailaddr`,
+        `Varchar1` AS `varchar1`,
+        `Varchar2` AS `varchar2`,
+        `Varchar3` AS `varchar3`,
+        `Varchar4` AS `varchar4`,
+        `Num1` AS `num1`,
+        `Num2` AS `num2`,
+        `Num3` AS `num3`,
+        `Date1` AS `date1`,
+        `Date2` AS `date2`,
+        `Date3` AS `date3`,
+        `CreateUserId` AS `createUserId`,
+        `CreateUserName` AS `createUserName`,
+        `UpdateUserId` AS `updateUserId`,
+        `UpdateUserName` AS `updateUserName`,
+        `DataVersion` AS `dataVersion`,
+        `IsDeleted` AS `isDeleted`,
+        `CityAreaName` AS `cityAreaName`,
+        `CREATE_TIME` AS `createTime`,
+        `UPDATE_TIME` AS `updateTime`,
+        `OutBoundAbility` AS `outBoundAbility`,
+        `InBoundAblility` AS `inBoundAblility`,
+        `WarehouseIntroduction` AS `warehouseIntroduction`,
+        `PictContent` AS `pictContent`,
+        `DataIntegrity` AS `dataIntegrity`,
+        `IsPublish` AS `isPublish`,
+        `BrowseNum` AS `browseNum`,
+        `ConcernNum` AS `concernNum`,
+        `VarietiesCount` AS `varietiesCount`,
+        `PKGS` AS `pkgs`,
+        `Venue` AS `venue`,
+        `ThreePartyWarehouse` AS `threePartyWarehouse`,
+        `DataSources` AS `dataSources`,
+        `SourceWarehouseGuid` AS `sourceWarehouseGuid`
+      FROM `mfwarehouse`
+    ]]>
+    <include refid="searchConditions" />
+    <![CDATA[
+      ORDER BY `GUID` DESC
+    ]]>
+  </select>
+
+  <!-- 查询条件 -->
+  <sql id="searchConditions">
+    <where>
+    </where>
+  </sql>
+</mapper>

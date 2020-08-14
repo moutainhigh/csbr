@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.csbr.qingcloud.user.scm.mybatis.mapper.MfTenantLicMapper">
+        <!-- 分页返回满足查询条件的平台会员企业证照信息 -->
+    <select id="mapperPageMfTenantLics" resultType="com.csbr.qingcloud.user.scm.mybatis.entity.MfTenantLic">
+      <![CDATA[
+        SELECT
+          `begin_date` AS `beginDate`,
+          `create_time` AS `createTime`,
+          `end_date` AS `endDate`,
+          `guid` AS `guid`,
+          `is_unlimited` AS `isUnlimited`,
+          `license_num` AS `licenseNum`,
+          `license_type` AS `licenseType`,
+          `pict_content` AS `pictContent`,
+          `tenant_guid` AS `tenantGuid`,
+          `update_time` AS `updateTime`
+        FROM `mf_tenant_lic`
+      ]]>
+      <include refid="searchConditions" />
+      <![CDATA[
+        ORDER BY `guid` DESC
+      ]]>
+    </select>
+    
+      <!-- 查询条件 -->
+    <sql id="searchConditions">
+      <where>
+        <if test="so.tenantGuid != null and so.tenantGuid != ''">
+          <![CDATA[ and `tenant_guid`=#{so.tenantGuid} ]]>
+        </if>
+      </where>
+    </sql>
+    </mapper>

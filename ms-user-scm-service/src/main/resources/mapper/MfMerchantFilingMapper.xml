@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.csbr.qingcloud.user.scm.mybatis.mapper.MfMerchantFilingMapper">
+        <!-- 分页返回满足查询条件的商户备案信息 -->
+    <select id="mapperPageMfMerchantFilings" resultType="com.csbr.qingcloud.user.scm.mybatis.entity.MfMerchantFiling">
+      <![CDATA[
+        SELECT
+          `approval_state` AS `approvalState`,
+          `create_time` AS `createTime`,
+          `create_user_id` AS `createUserId`,
+          `create_user_name` AS `createUserName`,
+          `guid` AS `guid`,
+          `is_deleted` AS `isDeleted`,
+          `last_approval_time` AS `lastApprovalTime`,
+          `last_approver` AS `lastApprover`,
+          `last_approver_guid` AS `lastApproverGuid`,
+          `merchant_guid` AS `merchantGuid`,
+          `proc_def_id` AS `procDefId`,
+          `reject_reason` AS `rejectReason`,
+          `tenant_guid` AS `tenantGuid`,
+          `update_time` AS `updateTime`,
+          `update_user_id` AS `updateUserId`,
+          `update_user_name` AS `updateUserName`
+        FROM `mf_merchant_filing`
+      ]]>
+      <include refid="searchConditions" />
+      <![CDATA[
+        ORDER BY `guid` DESC
+      ]]>
+    </select>
+    
+      <!-- 查询条件 -->
+    <sql id="searchConditions">
+      <where>
+        <if test="so.procDefId != null and so.procDefId != ''">
+          <![CDATA[ and `proc_def_id`=#{so.procDefId} ]]>
+        </if>
+      </where>
+    </sql>
+
+    <!--商户备案查询-->
+    <select id="getFilingPageList" resultType  ="java.util.List" parameterType="java.util.Map">
+        SELECT
+            mmf.merchant_guid AS  merchantGuid,
+            mm.merchant_name AS merchantName,
+            mm.manager AS manager,
+            mm.contact_tel AS contactTel,
+            mm.is_free_man AS isFreeMan,
+            mm.co_operatives_guid AS coOperativesGuid,
+            mm.co_operatives_name AS coOperativesName,
+            mm.province AS province,
+            mm.city AS city,
+            mm.district AS district,
+            mm.venue AS venue,
+            mmf.approval_state AS approvalState,
+            mmf.create_time AS createTime,
+            mmf.update_time AS updateTime
+        FROM
+            mf_merchant_filing mmf
+            LEFT JOIN mf_merchant mm ON mmf.merchant_guid = mm.guid
+        WHERE 1=1
+        <if test="merchantName != null and merchantName != ''">
+            AND mm.merchant_name = #{merchantName}
+        </if>
+        /*人员*/
+        <if test="manager != null and manager != ''">
+            AND mm.manager = #{manager}
+        </if>
+        /*来源*/
+        <if test="isFreeMan != null and isFreeMan != ''">
+            AND mm.is_free_man = #{isFreeMan}
+        </if>
+        <if test="province != null and province != ''">
+            AND mm.province = #{province}
+        </if>
+        <if test="city != null and city != ''">
+            AND mm.city = #{city}
+        </if>
+        <if test="district != null and district != ''">
+            AND mm.district = #{district}
+        </if>
+        <if test="startTime != null and startTime != ''">
+            <![CDATA[
+            AND mmf.create_time >= str_to_date( #{startTime},'%Y-%m-%d %H:%i:%s')
+            ]]>
+        </if>
+        <if test="endTime != null and endTime != ''">
+            <![CDATA[
+            AND mmf.create_time < str_to_date( #{endTime},'%Y-%m-%d %H:%i:%s')
+            ]]>
+        </if>
+        /*状态*/
+        <if test="approvalState != null and approvalState != ''">
+            AND mmf.approval_state = #{approvalState}
+        </if>
+    </select>
+</mapper>

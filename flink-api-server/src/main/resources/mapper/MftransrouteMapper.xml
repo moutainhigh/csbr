@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.csbr.cloud.flink.api.mybatis.medicine.mapper.MftransrouteMapper">
+    <!-- 分页返回满足查询条件的配送路线资料信息 -->
+  <select id="searchMftransroutes" parameterType="com.csbr.cloud.flink.api.mybatis.medicine.mapper.so.MftransrouteSO" resultType="com.csbr.cloud.flink.api.mybatis.medicine.entity.Mftransroute">
+    <![CDATA[
+      SELECT
+        `GUID` AS `guid`,
+        `TenantGuid` AS `tenantGuid`,
+        `CorpGuid` AS `corpGuid`,
+        `LogCenterGuid` AS `logCenterGuid`,
+        `CarrierGuid` AS `carrierGuid`,
+        `State` AS `state`,
+        `RouteCode` AS `routeCode`,
+        `RouteName` AS `routeName`,
+        `TransportMode` AS `transportMode`,
+        `AirLineGUID` AS `airLineGuid`,
+        `AirLineName` AS `airLineName`,
+        `TransitAddress` AS `transitAddress`,
+        `DataSources` AS `dataSources`,
+        `NodePoints` AS `nodePoints`,
+        `RouteType` AS `routeType`,
+        `AutoDispatch` AS `autoDispatch`,
+        `Deadline` AS `deadline`,
+        `Memo` AS `memo`,
+        `TransitDays` AS `transitDays`,
+        `Dispatch` AS `dispatch`,
+        `DispatchVenue` AS `dispatchVenue`,
+        `Destination` AS `destination`,
+        `DestinationVenue` AS `destinationVenue`,
+        `ViaPlace` AS `viaPlace`,
+        `LogAreaGUID` AS `logAreaGuid`,
+        `Varchar1` AS `varchar1`,
+        `Varchar2` AS `varchar2`,
+        `Varchar3` AS `varchar3`,
+        `Varchar4` AS `varchar4`,
+        `Num1` AS `num1`,
+        `Num2` AS `num2`,
+        `Num3` AS `num3`,
+        `Date1` AS `date1`,
+        `Date2` AS `date2`,
+        `Date3` AS `date3`,
+        `CreateUserId` AS `createUserId`,
+        `CreateUserName` AS `createUserName`,
+        `UpdateUserId` AS `updateUserId`,
+        `UpdateUserName` AS `updateUserName`,
+        `DataVersion` AS `dataVersion`,
+        `IsDeleted` AS `isDeleted`,
+        `CREATE_TIME` AS `createTime`,
+        `UPDATE_TIME` AS `updateTime`
+      FROM `mftransroute`
+    ]]>
+    <include refid="searchConditions" />
+    <![CDATA[
+      ORDER BY `GUID` DESC
+    ]]>
+  </select>
+
+  <!-- 查询条件 -->
+  <sql id="searchConditions">
+    <where>
+    </where>
+  </sql>
+</mapper>

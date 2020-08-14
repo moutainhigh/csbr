@@ -1,0 +1,13 @@
+spring:
+  rabbitmq:
+    host: 49.4.23.228
+    virtual-host: /
+eureka:
+  instance:
+    #设置外网IP号
+#    ip-address: 49.4.23.228
+    ip-address: 192.168.5.4
+  client:
+    serviceUrl:
+#      defaultZone: http://49.4.23.228:8761/eureka/
+      defaultZone: http://192.168.5.4:8761/eureka/

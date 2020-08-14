@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.csbr.cloud.flink.api.mybatis.basedata.mapper.PCustomerTypeSumMapper">
+    <!-- 分页返回满足查询条件的信息 -->
+  <select id="searchPCustomerTypeSums" parameterType="com.csbr.cloud.flink.api.mybatis.basedata.mapper.so.PCustomerTypeSumSO" resultType="com.csbr.cloud.flink.api.mybatis.basedata.entity.PCustomerTypeSum">
+    <![CDATA[
+      SELECT
+        `create_time` AS `createTime`,
+        `id` AS `id`,
+        `totle_delivery` AS `totleDelivery`,
+        `totle_medIns` AS `totleMedIns`,
+        `totle_pro` AS `totlePro`,
+        `update_time` AS `updateTime`
+      FROM `p_customer_type_sum`
+    ]]>
+    <include refid="searchConditions" />
+    <![CDATA[
+      ORDER BY `id` DESC
+    ]]>
+  </select>
+
+  <!-- 查询条件 -->
+  <sql id="searchConditions">
+    <where>
+    </where>
+  </sql>
+
+  <select id="searchPCustomerTypeSum" parameterType="com.csbr.cloud.flink.api.mybatis.basedata.mapper.so.PCustomerTypeSumSO" resultType="com.csbr.cloud.flink.api.mybatis.basedata.entity.PCustomerTypeSum">
+    <![CDATA[
+      SELECT
+        `create_time` AS `createTime`,
+        `id` AS `id`,
+        `totle_delivery` AS `totleDelivery`,
+        `totle_medIns` AS `totleMedIns`,
+        `totle_pro` AS `totlePro`,
+        `update_time` AS `updateTime`
+      FROM `p_customer_type_sum`
+    ]]>
+    <include refid="searchConditions" />
+    <![CDATA[
+      ORDER BY `id` DESC
+      LIMIT 1
+    ]]>
+  </select>
+</mapper>

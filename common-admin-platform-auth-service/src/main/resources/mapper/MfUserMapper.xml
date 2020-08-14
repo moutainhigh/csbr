@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.csbr.qingcloud.common.admin.platform_auth.mybatis.mapper.MfUserMapper">
+        <!-- 分页返回满足查询条件的用户信息 -->
+    <select id="mapperPageMfUsers" resultType="com.csbr.qingcloud.common.admin.platform_auth.mybatis.entity.MfUser">
+      <![CDATA[
+        SELECT
+          `biz_state` AS `bizState`,
+          `create_time` AS `createTime`,
+          `create_user_id` AS `createUserId`,
+          `create_user_name` AS `createUserName`,
+          `date1` AS `date1`,
+          `date2` AS `date2`,
+          `date3` AS `date3`,
+          `guid` AS `guid`,
+          `id_code` AS `idCode`,
+          `is_deleted` AS `isDeleted`,
+          `is_Init` AS `isInit`,
+          `is_locked` AS `isLocked`,
+          `last_login_time` AS `lastLoginTime`,
+          `login_error_count` AS `loginErrorCount`,
+          `logon_user` AS `logonUser`,
+          `mobile_no` AS `mobileNo`,
+          `name` AS `name`,
+          `num1` AS `num1`,
+          `num2` AS `num2`,
+          `num3` AS `num3`,
+          `platform_guid` AS `platformGuid`,
+          `pwd` AS `pwd`,
+          `registration_code` AS `registrationCode`,
+          `remark` AS `remark`,
+          `service_sign` AS `serviceSign`,
+          `update_time` AS `updateTime`,
+          `update_user_id` AS `updateUserId`,
+          `update_user_name` AS `updateUserName`,
+          `varchar1` AS `varchar1`,
+          `varchar2` AS `varchar2`,
+          `varchar3` AS `varchar3`,
+          `varchar4` AS `varchar4`
+        FROM `mf_user`
+      ]]>
+      <include refid="searchConditions" />
+      <![CDATA[
+        ORDER BY `guid` DESC
+      ]]>
+    </select>
+    
+      <!-- 查询条件 -->
+    <sql id="searchConditions">
+      <where>
+        <if test="so.mobileNo != null and so.mobileNo != ''">
+          <![CDATA[ and `mobile_no`=#{so.mobileNo} ]]>
+        </if>
+        <if test="so.name != null and so.name != ''">
+          <![CDATA[ and `name`=#{so.name} ]]>
+        </if>
+      </where>
+    </sql>
+    </mapper>

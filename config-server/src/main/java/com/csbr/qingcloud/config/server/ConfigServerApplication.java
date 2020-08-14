@@ -14,7 +14,7 @@ import org.springframework.cloud.config.server.EnableConfigServer;
 @SpringBootApplication
 @EnableConfigServer//开启config-server
 //@EnableEurekaClient//将其注册到服务中心
-public class ConfigServerApplication implements CommandLineRunner {
+public class ConfigServerApplication {
 
     private final static Logger logger= LoggerFactory.getLogger(ConfigServerApplication.class);
 
@@ -23,11 +23,11 @@ public class ConfigServerApplication implements CommandLineRunner {
 
     }
 
-    @Override
-    public void run(String... args) throws Exception {
-        for (int i = 0; i <99 ; i++) {
-            logger.info("=========hello World ELK========");
-        }
-
-    }
+//    @Override
+//    public void run(String... args) throws Exception {
+//        for (int i = 0; i <99 ; i++) {
+//            logger.info("=========hello World ELK========");
+//        }
+//
+//    }
 }

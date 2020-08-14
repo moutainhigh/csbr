@@ -1,0 +1,47 @@
+spring:
+  application:
+    name: hystrix-dashboard
+  security:
+    user:
+      name: "admin"
+      password: "admin"
+server:
+  port: 2222
+#指定聚合哪些集群，多个使用","分割，默认为default。可使用http://.../turbine.stream?cluster={clusterConfig之一}访问
+turbine:
+  aggregator:
+    cluster-config: default
+  ##需要监控的微服务
+  app-config: order-logistics-server,order-business-server
+  cluster-name-expression: new String("default")
+  combine-host-port: true
+eureka:
+  # 修改在服务中心的地址status为 ip+端口 【例如：10.0.0.100:88】
+  instance:
+    prefer-ip-address: true
+    #让eureka能点击进入到swagger
+    status-page-url: http://${eureka.instance.ip-address}:${server.port}/swagger-ui.html
+    instance-id: ${eureka.instance.ip-address}:${spring.application.name}:${eureka.instance.non-secure-port}
+    #设置外网IP号
+    ip-address: 192.168.4.4
+    #设置外网端口号
+    non-secure-port: 2222
+    ##踢出时间
+    leaseRenewalIntervalInSeconds: 10
+    health-check-url-path: /actuator/health
+    ##监控安全
+    metadata-map:
+      user.name: ${spring.security.user.name}
+      user.password: ${spring.security.user.password}
+  client:
+    registryFetchIntervalSeconds: 5
+    serviceUrl:
+      defaultZone: http://192.168.5.4:8761/eureka/
+##构建信息
+info:
+  build:
+    artifactId: @project.artifactId@
+    version: @project.version@
+    name: @project.name@
+    groupId: @project.groupId@
+    description: @project.description@

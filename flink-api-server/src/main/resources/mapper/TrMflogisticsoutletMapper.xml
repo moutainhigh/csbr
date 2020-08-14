@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.csbr.cloud.flink.api.mybatis.transport.mapper.TrMflogisticsoutletMapper">
+    <!-- 分页返回满足查询条件的物流网点信息 -->
+  <select id="searchTrMflogisticsoutlets" parameterType="com.csbr.cloud.flink.api.mybatis.transport.mapper.so.TrMflogisticsoutletSO" resultType="com.csbr.cloud.flink.api.mybatis.transport.entity.TrMflogisticsoutlet">
+    <![CDATA[
+      SELECT
+        `GUID` AS `guid`,
+        `TenantGUID` AS `tenantGuid`,
+        `ChineseName` AS `chineseName`,
+        `HelpCode` AS `helpCode`,
+        `Province` AS `province`,
+        `City` AS `city`,
+        `District` AS `district`,
+        `Venue` AS `venue`,
+        `Address` AS `address`,
+        `Contacts` AS `contacts`,
+        `ContactTel` AS `contactTel`,
+        `Varchar1` AS `varchar1`,
+        `Varchar2` AS `varchar2`,
+        `Varchar3` AS `varchar3`,
+        `Varchar4` AS `varchar4`,
+        `Num1` AS `num1`,
+        `Num2` AS `num2`,
+        `Num3` AS `num3`,
+        `Date1` AS `date1`,
+        `Date2` AS `date2`,
+        `Date3` AS `date3`,
+        `CREATE_TIME` AS `createTime`,
+        `UPDATE_TIME` AS `updateTime`,
+        `CreateUserId` AS `createUserId`,
+        `CreateUserName` AS `createUserName`,
+        `UpdateUserId` AS `updateUserId`,
+        `UpdateUserName` AS `updateUserName`,
+        `DataVersion` AS `dataVersion`,
+        `IsDeleted` AS `isDeleted`
+      FROM `mflogisticsoutlets`
+    ]]>
+    <include refid="searchConditions" />
+    <![CDATA[
+      ORDER BY `GUID` DESC
+    ]]>
+  </select>
+
+  <!-- 查询条件 -->
+  <sql id="searchConditions">
+    <where>
+    </where>
+  </sql>
+</mapper>

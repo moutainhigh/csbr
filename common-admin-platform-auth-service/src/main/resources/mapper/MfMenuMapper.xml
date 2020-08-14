@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.csbr.qingcloud.common.admin.platform_auth.mybatis.mapper.MfMenuMapper">
+        <!-- 分页返回满足查询条件的菜单信息 -->
+    <select id="mapperPageMfMenus" resultType="com.csbr.qingcloud.common.admin.platform_auth.mybatis.entity.MfMenu">
+      <![CDATA[
+        SELECT
+          `guid` AS `guid`,
+          `platform_guid` AS `platformGuid`,
+          `app_side_guid` AS `appSideGuid`,
+          `product_guid` AS `productGuid`,
+          `parent_guid` AS `parentGuid`,
+          `menu_name` AS `menuName`,
+          `path` AS `path`,
+          `component` AS `component`,
+          `action` AS `action`,
+          `icon` AS `icon`,
+          `order_num` AS `orderNum`,
+          `menu_type` AS `menuType`,
+          `visible` AS `visible`,
+          `biz_state` AS `bizState`,
+          `is_external_link` AS `isExternalLink`,
+          `perms` AS `perms`,
+          `create_user_id` AS `createUserId`,
+          `create_user_name` AS `createUserName`,
+          `update_user_id` AS `updateUserId`,
+          `update_user_name` AS `updateUserName`,
+          `create_time` AS `createTime`,
+          `update_time` AS `updateTime`
+        FROM `mf_menu`
+      ]]>
+      <include refid="searchConditions" />
+      <![CDATA[
+        ORDER BY `guid` DESC
+      ]]>
+    </select>
+    
+      <!-- 查询条件 -->
+    <sql id="searchConditions">
+      <where>
+        <if test="so.platformGuid != null and so.platformGuid != ''">
+          <![CDATA[ and `platform_guid`=#{so.platformGuid} ]]>
+        </if>
+        <if test="so.appSideGuid != null and so.appSideGuid != ''">
+          <![CDATA[ and `app_side_guid`=#{so.appSideGuid} ]]>
+        </if>
+        <if test="so.productGuid != null and so.productGuid != ''">
+          <![CDATA[ and `product_guid`=#{so.productGuid} ]]>
+        </if>
+      </where>
+    </sql>
+    </mapper>

@@ -1,0 +1,54 @@
+spring:
+  application:
+    name: flink-api-server
+  cloud:
+    config:
+      uri: http://user:123456@192.168.5.4:8888/
+#      uri: http://user:123456@49.4.23.228:8888/
+      profile: dev
+      label: master
+    ##消息总线
+    bus:
+      trace:
+        enabled: true
+      #webhooks不能通过config-server去更新其他微服务问题
+#      id: ${vcap.application.name:${spring.application.name}}:${vcap.application.instance_index:${spring.cloud.config.profile:${local.server.port:${server.port:8501}}}}:${vcap.application.instance_id:${random.value}}
+      id: ${spring.application.name}:${spring.cloud.config.profile}:${random.value}
+  boot:
+    admin:
+      client:
+        url: http://192.168.5.4:7086
+#        url: http://49.4.23.228:7086
+        instance:
+          prefer-ip: true
+##zipkin服务
+#  zipkin:
+##    base-url: http://49.4.23.228:9411/
+#    sender:
+#      type: kafka
+#    kafka:
+#      topic: zipkin
+  sleuth:
+    sampler:
+      probability: 0.1
+##admin监控配置
+management:
+  metrics:
+    web:
+      server:
+        auto-time-requests: false
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+        exclude:
+  endpoint:
+    health:
+      show-details: always
+  ###暂时禁用rabbit的健康检查
+  health:
+    rabbit:
+      enabled: false
+logging:
+  level:
+    org.springframework.cloud.bus: debug

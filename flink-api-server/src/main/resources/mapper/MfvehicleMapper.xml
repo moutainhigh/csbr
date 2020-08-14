@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.csbr.cloud.flink.api.mybatis.medicine.mapper.MfvehicleMapper">
+    <!-- 分页返回满足查询条件的运输车辆资料信息 -->
+  <select id="searchMfvehicles" parameterType="com.csbr.cloud.flink.api.mybatis.medicine.mapper.so.MfvehicleSO" resultType="com.csbr.cloud.flink.api.mybatis.medicine.entity.Mfvehicle">
+    <![CDATA[
+      SELECT
+        `GUID` AS `guid`,
+        `TenantGuid` AS `tenantGuid`,
+        `CorpGuid` AS `corpGuid`,
+        `LogCenterGuid` AS `logCenterGuid`,
+        `CarrierGuid` AS `carrierGuid`,
+        `BizState` AS `bizState`,
+        `VehicleTypeGuid` AS `vehicleTypeGuid`,
+        `VehicleType` AS `vehicleType`,
+        `PlateNumber` AS `plateNumber`,
+        `VehicleNature` AS `vehicleNature`,
+        `IsExternalCarrier` AS `isExternalCarrier`,
+        `PictContent` AS `pictContent`,
+        `PassportFlag` AS `passportFlag`,
+        `DrivingLicNo` AS `drivingLicNo`,
+        `RegisterDate` AS `registerDate`,
+        `ReceivingPartyGuid` AS `receivingPartyGuid`,
+        `ReportingPartyGuid` AS `reportingPartyGuid`,
+        `AuditorGuid` AS `auditorGuid`,
+        `Auditor` AS `auditor`,
+        `AuditState` AS `auditState`,
+        `AuditSuggest` AS `auditSuggest`,
+        `AuditTime` AS `auditTime`,
+        `Varchar1` AS `varchar1`,
+        `Varchar2` AS `varchar2`,
+        `Varchar3` AS `varchar3`,
+        `Varchar4` AS `varchar4`,
+        `Num1` AS `num1`,
+        `Num2` AS `num2`,
+        `Num3` AS `num3`,
+        `Date1` AS `date1`,
+        `Date2` AS `date2`,
+        `Date3` AS `date3`,
+        `CreateUserId` AS `createUserId`,
+        `CreateUserName` AS `createUserName`,
+        `UpdateUserId` AS `updateUserId`,
+        `UpdateUserName` AS `updateUserName`,
+        `DataVersion` AS `dataVersion`,
+        `IsDeleted` AS `isDeleted`,
+        `CREATE_TIME` AS `createTime`,
+        `UPDATE_TIME` AS `updateTime`,
+        `Organization` AS `organization`,
+        `RegistrationDate` AS `registrationDate`,
+        `Institutions` AS `institutions`,
+        `BrandName` AS `brandName`,
+        `ChassisType` AS `chassisType`,
+        `Mero` AS `mero`
+      FROM `mfvehicle`
+    ]]>
+    <include refid="searchConditions" />
+    <![CDATA[
+      ORDER BY `GUID` DESC
+    ]]>
+  </select>
+
+  <!-- 查询条件 -->
+  <sql id="searchConditions">
+    <where>
+    </where>
+  </sql>
+</mapper>

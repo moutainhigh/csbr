@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.csbr.cloud.hy.server.mapper.InvLotStockWmsMapper">
+   
+    <select id="getStockDifference" resultType  ="java.util.Map" parameterType="java.util.Map">
+        SELECT
+          wms.guid AS guid,
+          wms.warehouse_guid AS warehouseGuid,
+          wms.warehouse_name AS warehouseName,
+          wms.cargo_owner_guid AS cargoOwnerGuid,
+          wms.cargo_owner_name AS cargoOwnerName,
+          wms.goods_guid AS goodsGuid,
+          wms.goods_code AS goodsCode,
+          wms.goods_name AS goodsName,
+          wms.goods_spec AS goodsSpec,
+          wms.unit AS unit,
+          wms.unit_qty AS unitQty,
+          wms.regist_key AS registKey,
+          wms.manufacturer AS manufacturer,
+          wms.lot AS lot,
+          wms.production_date AS productionDate,
+          wms.expire_date AS expireDate,
+          sap.stock_qty AS erpStockQty,
+          wms.stock_qty AS wmsStockQty
+        FROM
+            inv_lot_stock_wms wms
+            INNER JOIN inv_lot_stock_sap sap ON wms.goods_code = sap.goods_code
+        WHERE 1=1
+        <if test="tenantGuid != null and tenantGuid != ''">
+            AND wms.tenant_guid = #{tenantGuid}
+        </if>
+        <if test="warehouseGuid != null and warehouseGuid != ''">
+            AND wms.ware_house_guid = #{warehouseGuid}
+        </if>
+        <if test="goodsCode != null and goodsCode != ''">
+            AND wms.goods_code = #{goodsCode}
+        </if>
+        <if test="goodsName != null and goodsName != ''">
+            AND wms.goods_name = #{goodsName}
+        </if>
+        <if test="manufacturer != null and manufacturer != ''">
+            AND wms.manufacturer = #{manufacturer}
+        </if>
+        <if test="lot != null and lot != ''">
+            AND wms.lot = #{lot}
+        </if>
+    </select>
+    
+    <select id="getUnsalableStock" resultType  ="java.util.Map" parameterType="java.util.Map">
+        SELECT
+            wms.guid AS guid,
+            wms.tenant_guid AS tenantGuid,
+            wms.corp_guid AS corpGuid,
+            wms.warehouse_guid AS warehouseGuid,
+            wms.warehouse_name AS warehouseName,
+            wms.warehouse_type AS warehouseType,
+            wms.cargo_owner_guid AS cargoOwnerGuid,
+            wms.cargo_owner_name AS cargoOwnerName,
+            wms.goods_guid AS goodsGuid,
+            wms.goods_code AS goodsCode,
+            wms.goods_name AS goodsName,
+            wms.goods_spec AS goodsSpec,
+            wms.unit AS unit,
+            wms.unit_qty AS unitQty,
+            wms.regist_key AS registKey,
+            wms.manufacturer AS manufacturer,
+            wms.lot AS lot,
+            wms.production_date AS productionDate,
+            wms.expire_date AS expireDate,
+            wms.stock_qty AS stockQty,
+            wms.pkgs AS pkgs,
+            wms.scattered_qty AS scatteredQty,
+            wms.stock_state AS stockState,
+            wms.location_no AS locationNo,
+            wms.location_type AS locationType,
+            wms.storage_date AS storageDate,
+            wms.last_out_date AS lastOutDate,
+            TIMESTAMPDIFF(DAY, wms.storage_date, wms.last_out_date) AS stockage
+        FROM
+            inv_lot_stock_wms wms
+            WHERE 1=1
+        <if test="tenantGuid != null and tenantGuid != ''">
+            AND wms.tenant_guid = #{tenantGuid}
+        </if>
+        <if test="warehouseGuid != null and warehouseGuid != ''">
+            AND wms.ware_house_guid = #{warehouseGuid}
+        </if>
+        <if test="goodsCode != null and goodsCode != ''">
+            AND wms.goods_code = #{goodsCode}
+        </if>
+        <if test="goodsName != null and goodsName != ''">
+            AND wms.goods_name = #{goodsName}
+        </if>
+        <if test="manufacturer != null and manufacturer != ''">
+            AND wms.manufacturer = #{manufacturer}
+        </if>
+        <if test="lot != null and lot != ''">
+            AND wms.lot = #{lot}
+        </if>
+        <if test="storageDate != null and storageDate != ''">
+            AND wms.storage_date = #{storageDate}
+        </if>
+        <if test="stockAge != null and stockAge != ''">
+            AND TIMESTAMPDIFF(DAY, wms.storage_date, wms.last_out_date) > #{stockAge}
+        </if>
+
+    </select>
+</mapper>

@@ -1,0 +1,309 @@
+pipeline {
+    agent any
+    //maven代理（直接从官网拉取maven镜像）
+    //agent {
+        //docker {
+            //image 'maven:3-alpine'
+            //args '-v /root/.m2:/root/.m2'
+        //}
+    //}
+    //环境定义
+    environment{
+        //日志映射路径
+        LOG_PATH = "/mnt/log/"
+        //服务名称
+        SVN_FOLD = readMavenPom().getArtifactId()
+        //部署远程服务器
+        //192.168.4.4服务器
+        //SSH_PATH = "csbr4.4"
+        //192.168.5.4
+        SSH_PATH = "csbr5.4"
+        //139.9.190.186
+        //SSH_PATH = "csbr190.186"
+        //镜像版本号
+        image_tag = readMavenPom().getVersion()
+        //docker私服ip
+        ip = "192.168.5.4:82"
+        //微服务端口号
+        port = "8858"
+    }
+    //定时任务
+    //triggers { pollSCM('H 4/* 0 0 1-5') }
+    //triggers {
+        //每天凌晨2点自动构建
+    //    cron('H 2 * * *')
+    //}
+     options {
+            // 设置保留的最大历史构建数为6
+        buildDiscarder(logRotator(numToKeepStr: '6'))
+     }
+    //全局定义工具
+    tools {
+        //工具名称必须在Jenkins 管理Jenkins → 全局工具配置中预配置。
+        maven 'maven3'
+    }
+    stages {
+        //构建
+        stage('Maven Build') {
+            steps {
+                //sh './gradlew build'
+                 //执行shell命令
+                 sh 'echo ${JAVA_HOMOE}'
+                 sh 'mvn -f ./pom.xml clean package -Dmaven.test.skip=true -X'
+                 //sh 'mvn -f ${SVN_FOLD}/pom.xml clean package'
+            }
+        }
+        stage('Docker Build') {
+                    steps {
+                       //分分支构建
+                       script{
+                            if(env.BRANCH_NAME=='develop'){
+                                //develop分支环境
+                                echo 'start to deploy ${SVN_FOLD} on develop ...'
+                                 sh '''
+                                    CID=$(docker ps -a | grep "${SVN_FOLD}" | awk '{print $1}')
+                                    IID=$(docker images | grep "${SVN_FOLD}" | awk '{print $3}')
+                                    cp "$WORKSPACE"/target/"${SVN_FOLD}".jar "$WORKSPACE"
+                                    if [ -n "$IID" ]; then
+                                       echo "存在'${SVN_FOLD}'镜像，IID='$IID'"
+                                       if [ "$CID" = "" ]; then
+                                          echo "CID为空!"
+                                       else
+                                          docker stop "$CID"
+                                          docker rm "$CID"
+                                       fi
+                                       docker rmi -f "$IID"
+                                       cd "$WORKSPACE"
+                                       ##构建镜像到远程仓库
+                                       docker login "${ip}" -u admin -p admin
+                                       #docker tag "${SVN_FOLD}":"${image_tag}" "${ip}"/csbr/"${SVN_FOLD}":"${image_tag}"
+                                       docker build -t "${ip}"/csbr/"${SVN_FOLD}":"${image_tag}" .
+                                       docker push "${ip}"/csbr/"${SVN_FOLD}":"${image_tag}"
+                                    else
+                                       echo "不存在'${SVN_FOLD}'镜像，开始构建镜像"
+                                       cd "$WORKSPACE"
+                                       if [ "$CID" = "" ]; then
+                                          echo "CID为空!"
+                                       else
+                                          docker stop "$CID"
+                                          docker rm "$CID"
+                                       fi
+                                       ##构建镜像到远程仓库
+                                       docker login "${ip}" -u admin -p admin
+                                       #docker tag "${SVN_FOLD}":"${image_tag}" "${ip}"/csbr/"${SVN_FOLD}":"${image_tag}"
+                                       docker build -t "${ip}"/csbr/"${SVN_FOLD}":"${image_tag}" .
+                                       docker push "${ip}"/csbr/"${SVN_FOLD}":"${image_tag}"
+                                    fi
+                                    ##远程构建后删除jenkins所在的本地镜像
+                                    IID=$(docker images | grep "${SVN_FOLD}" | awk '{print $3}')
+                                    docker rmi -f "\$IID"
+                                    '''
+                                echo 'Depoly ${SVN_FOLD} success ...'
+                            }else if(env.BRANCH_NAME=='release'){
+                                //release分支环境
+                                echo 'start to deploy ${SVN_FOLD} on release ...'
+                                 sh '''
+                                    CID=$(docker ps -a | grep "${SVN_FOLD}" | awk '{print $1}')
+                                    IID=$(docker images | grep "${SVN_FOLD}" | awk '{print $3}')
+                                    cp "$WORKSPACE"/target/"${SVN_FOLD}".jar "$WORKSPACE"
+                                    if [ -n "$IID" ]; then
+                                       echo "存在'${SVN_FOLD}'镜像，IID='$IID'"
+                                       if [ "$CID" = "" ]; then
+                                          echo "CID为空!"
+                                       else
+                                          docker stop "$CID"
+                                          docker rm "$CID"
+                                       fi
+                                       docker rmi -f "$IID"
+                                       cd "$WORKSPACE"
+                                       ##构建镜像到远程仓库
+                                       docker login "${ip}" -u admin -p admin
+                                       #docker tag "${SVN_FOLD}":"${image_tag}" "${ip}"/csbr/"${SVN_FOLD}":"${image_tag}"
+                                       docker build -t "${ip}"/csbr/"${SVN_FOLD}":"${image_tag}" .
+                                       docker push "${ip}"/csbr/"${SVN_FOLD}":"${image_tag}"
+                                    else
+                                       echo "不存在'${SVN_FOLD}'镜像，开始构建镜像"
+                                       cd "$WORKSPACE"
+                                       if [ "$CID" = "" ]; then
+                                          echo "CID为空!"
+                                       else
+                                          docker stop "$CID"
+                                          docker rm "$CID"
+                                       fi
+                                       ##构建镜像到远程仓库
+                                       docker login "${ip}" -u admin -p admin
+                                       #docker tag "${SVN_FOLD}":"${image_tag}" "${ip}"/csbr/"${SVN_FOLD}":"${image_tag}"
+                                       docker build -t "${ip}"/csbr/"${SVN_FOLD}":"${image_tag}" .
+                                       docker push "${ip}"/csbr/"${SVN_FOLD}":"${image_tag}"
+                                    fi
+                                    ##远程构建后删除jenkins所在的本地镜像
+                                    IID=$(docker images | grep "${SVN_FOLD}" | awk '{print $3}')
+                                    docker rmi -f "\$IID"
+                                    '''
+                                echo 'Depoly ${SVN_FOLD} success on release ...'
+                            }else if(env.BRANCH_NAME=='master'){
+                                //master分支
+                                echo 'start to deploy "${SVN_FOLD}" on master...'
+                            sh '''
+                               CID=$(docker ps -a | grep "${SVN_FOLD}" | awk '{print $1}')
+                               IID=$(docker images | grep "${SVN_FOLD}" | awk '{print $3}')
+                               #ip=192.168.5.4:82
+                               cp "$WORKSPACE"/target/"${SVN_FOLD}".jar "$WORKSPACE"
+                               if [ -n "$IID" ]; then
+                                  echo "存在'${SVN_FOLD}'镜像，IID='$IID'"
+                                  if [ "$CID" = "" ]; then
+                                    echo "CID为空!"
+                                  else
+                                    docker stop "$CID"
+                                    docker rm "$CID"
+                                  fi
+                                  docker rmi -f "$IID"
+                                  cd "$WORKSPACE"
+                                  ##构建镜像到远程仓库
+                                  docker login "${ip}" -u admin -p admin
+                                  #docker tag "${SVN_FOLD}":"${image_tag}" "${ip}"/csbr/"${SVN_FOLD}":"${image_tag}"
+                                  docker build -t "${ip}"/csbr/"${SVN_FOLD}":"${image_tag}" .
+                                  docker push "${ip}"/csbr/"${SVN_FOLD}":"${image_tag}"
+                               else
+                                  echo "不存在'${SVN_FOLD}'镜像，开始构建镜像"
+                                  cd "$WORKSPACE"
+                                  if [ "$CID" = "" ]; then
+                                     echo "CID为空!"
+                                  else
+                                     docker stop "$CID"
+                                     docker rm "$CID"
+                                  fi
+                                  ##构建镜像到远程仓库
+                                  docker login "${ip}" -u admin -p admin
+                                  #docker tag "${SVN_FOLD}":"${image_tag}" "${ip}"/csbr/"${SVN_FOLD}":"${image_tag}"
+                                  docker build -t "${ip}"/csbr/"${SVN_FOLD}":"${image_tag}" .
+                                  docker push "${ip}"/csbr/"${SVN_FOLD}":"${image_tag}"
+                               fi
+                               '''
+                                echo 'Depoly "${SVN_FOLD}" success on master ...'
+                            }
+                       }
+
+                    }
+                }
+        //测试(暂时不用)
+        //stage('Test') {
+            //steps {
+                //sh './gradlew check'
+                //sh 'mvn -f ${SVN_FOLD}/pom.xml test'
+                //sh 'mvn -f ${SVN_FOLD}/pom.xml test'
+            //}
+        //}
+        //部署
+        stage('Deploy') {
+            steps {
+                echo 'Deploying'
+                //分分支部署
+                script{
+                    if(env.BRANCH_NAME=='develop'){
+                        //develop分支环境
+                        echo 'start to deploy ${SVN_FOLD} on develop ...'
+                        //调用Publish Over SSH插件，上传docker-compose.yaml文件并且执行deploy脚本
+                        sshPublisher(publishers: [sshPublisherDesc(configName: "$SSH_PATH", transfers: [sshTransfer(cleanRemote: false, excludes: '', execCommand: """
+                            CID=\$(docker ps -a | grep $SVN_FOLD | awk '{print \$1}')
+                            IID=\$(docker images | grep $SVN_FOLD | awk '{print \$3}')
+                            if [ -n "\$IID" ]; then
+                                 echo "存在'\${SVN_FOLD}'镜像，IID='\$IID'"
+                                 if [ "\$CID" = "" ]; then
+                                    echo "CID为空!"
+                                 else
+                                    docker stop "\$CID"
+                                    docker rm "\$CID"
+                                 fi
+                                 docker rmi -f "\$IID"
+                            else
+                                echo "不存在'\${SVN_FOLD}'镜像，开始构建镜像"
+                                if [ "\$CID" = "" ]; then
+                                   echo "CID为空!"
+                                else
+                                   docker stop "\$CID"
+                                   docker rm "\$CID"
+                                fi
+                            fi
+                            echo "日志路径 '$LOG_PATH''$SVN_FOLD'"
+                            docker run --name "${SVN_FOLD}" -v "$LOG_PATH""$SVN_FOLD":"$LOG_PATH""$SVN_FOLD" -d -p "$port":"$port" -e CE="dev" -e JAVA_OPTS="-Xms128m -Xmx256m" "${ip}"/csbr/"${SVN_FOLD}":"${image_tag}"
+                        """, execTimeout: 120000, flatten: false, makeEmptyDirs: false, noDefaultExcludes: false, patternSeparator: '[, ]+', remoteDirectory: '/mnt/csbr/data', remoteDirectorySDF: false, removePrefix: '', sourceFiles: 'output/*.*')], usePromotionTimestamp: false, useWorkspaceInPromotion: false, verbose: false)])
+
+                        echo 'Depoly ${SVN_FOLD} success ...'
+                    }else if(env.BRANCH_NAME=='release'){
+                        //release分支环境
+                        echo 'start to deploy ${SVN_FOLD} on release ...'
+                        //调用Publish Over SSH插件，上传docker-compose.yaml文件并且执行deploy脚本
+                        sshPublisher(publishers: [sshPublisherDesc(configName: "$SSH_PATH", transfers: [sshTransfer(cleanRemote: false, excludes: '', execCommand: """
+                            CID=\$(docker ps -a | grep $SVN_FOLD | awk '{print \$1}')
+                            IID=\$(docker images | grep $SVN_FOLD | awk '{print \$3}')
+                            if [ -n "\$IID" ]; then
+                                 echo "存在'\${SVN_FOLD}'镜像，IID='\$IID'"
+                                 if [ "\$CID" = "" ]; then
+                                    echo "CID为空!"
+                                 else
+                                    docker stop "\$CID"
+                                    docker rm "\$CID"
+                                 fi
+                                 docker rmi -f "\$IID"
+                            else
+                                echo "不存在'\${SVN_FOLD}'镜像，开始构建镜像"
+                                if [ "\$CID" = "" ]; then
+                                   echo "CID为空!"
+                                else
+                                   docker stop "\$CID"
+                                   docker rm "\$CID"
+                                fi
+                            fi
+                            echo "日志路径 '$LOG_PATH''$SVN_FOLD'"
+                            docker run --name "${SVN_FOLD}" -v "$LOG_PATH""$SVN_FOLD":"$LOG_PATH""$SVN_FOLD" -d -p "$port":"$port" -e CE="dev" -e JAVA_OPTS="-Xms128m -Xmx256m" "${ip}"/csbr/"${SVN_FOLD}":"${image_tag}"
+                        """, execTimeout: 120000, flatten: false, makeEmptyDirs: false, noDefaultExcludes: false, patternSeparator: '[, ]+', remoteDirectory: '/mnt/csbr/data', remoteDirectorySDF: false, removePrefix: '', sourceFiles: 'output/*.*')], usePromotionTimestamp: false, useWorkspaceInPromotion: false, verbose: false)])
+
+                        echo 'Depoly ${SVN_FOLD} success on release ...'
+                    }else if(env.BRANCH_NAME=='master'){
+                        //master分支
+                        echo 'start to deploy ${SVN_FOLD} on master...'
+                        //调用Publish Over SSH插件，上传docker-compose.yaml文件并且执行deploy脚本
+                        sshPublisher(publishers: [sshPublisherDesc(configName: "$SSH_PATH", transfers: [sshTransfer(cleanRemote: false, excludes: '', execCommand: """
+                            CID=\$(docker ps -a | grep $SVN_FOLD | awk '{print \$1}')
+                            IID=\$(docker images | grep $SVN_FOLD | awk '{print \$3}')
+                            if [ -n "\$IID" ]; then
+                                 echo "存在'\${SVN_FOLD}'镜像，IID='\$IID'"
+                                 if [ "\$CID" = "" ]; then
+                                    echo "CID为空!"
+                                 else
+                                    docker stop "\$CID"
+                                    docker rm "\$CID"
+                                 fi
+                                 docker rmi -f "\$IID"
+                            else
+                                echo "不存在'\${SVN_FOLD}'镜像，开始构建镜像"
+                                if [ "\$CID" = "" ]; then
+                                   echo "CID为空!"
+                                else
+                                   docker stop "\$CID"
+                                   docker rm "\$CID"
+                                fi
+                            fi
+                            echo "日志路径 '$LOG_PATH''$SVN_FOLD'"
+                            docker run --name "${SVN_FOLD}" -v "$LOG_PATH""$SVN_FOLD":"$LOG_PATH""$SVN_FOLD" -d -p "$port":"$port" -e CE="dev" -e JAVA_OPTS="-Xms128m -Xmx256m" "${ip}"/csbr/"${SVN_FOLD}":"${image_tag}"
+                        """, execTimeout: 120000, flatten: false, makeEmptyDirs: false, noDefaultExcludes: false, patternSeparator: '[, ]+', remoteDirectory: '/mnt/csbr/data', remoteDirectorySDF: false, removePrefix: '', sourceFiles: 'output/*.*')], usePromotionTimestamp: false, useWorkspaceInPromotion: false, verbose: false)])
+
+                        echo 'Depoly ${SVN_FOLD} success on master ...'
+                    }
+                }
+                //sh './build.sh'
+            }
+        }
+    }
+
+    //归档
+    post {
+        always {
+            echo 'Archive artifacts'
+            archiveArtifacts artifacts: "**/target/*.jar", excludes: "**/target"
+        }
+    }
+
+
+}

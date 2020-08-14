@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.csbr.cloud.hy.server.mapper.InvLotStockWmsHistoryMapper">
+
+    <select id="getLotStockWms" resultType  ="java.util.Map" parameterType="java.util.Map">
+        SELECT
+           history.warehouse_guid AS warehouseGuid,
+           history.warehouse_name AS warehouseName,
+           history.warehouse_type AS warehouseType,
+           history.cargo_owner_guid AS cargoOwnerGuid,
+           history.cargo_owner_name AS cargoOwnerName,
+           warehouse.warehouse_nature AS warehouseNature,
+           history.location_type AS locationType,
+           history.create_time AS createTime,
+           history.stock_qty AS stockQty
+        FROM
+            inv_lot_stock_wms_history history
+            LEFT JOIN mf_warehouse warehouse ON warehouse.guid = history.warehouse_guid
+            WHERE 1=1
+        <if test="tenantGuid != null and tenantGuid != ''">
+            AND history.tenant_guid = #{tenantGuid}
+        </if>
+        <if test="warehouseGuid != null and warehouseGuid != ''">
+            AND history.warehouse_guid = #{warehouseGuid}
+        </if>
+    </select>
+</mapper>

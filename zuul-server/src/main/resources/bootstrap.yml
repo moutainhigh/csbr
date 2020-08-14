@@ -2,22 +2,40 @@ spring:
   application:
     name: zuul-server
   cloud:
-    config:
-      uri: http://user:123456@49.4.23.228:8888/
-      profile: dev
-      label: master
-  boot:
-    admin:
-      client:
-        url: http://49.4.23.228:7086
-        instance:
-          prefer-ip: true
-##admin监控配置
+#    nacos:
+#      #配置中心
+#      config:
+#        server-addr: 192.168.5.4:8848
+#        file-extension: yaml
+#        group: dev
+      #注册中心
+#      discovery:
+#        server-addr: 192.168.5.4:8848
+#        metadata:
+#          user:
+#            name: nacos
+#            password: nacos
+#          management:
+#            context-path: /actuator
+    #接口限流
+#    sentinel:
+#      transport:
+#        dashboard: 192.168.5.4:8858
+#        #取消懒加载
+#      eager: true
+  ##监控
+#  boot:
+#    admin:
+#      client:
+#        url: http://192.168.5.4:7086
+#        instance:
+#          prefer-ip: true
+###admin监控配置
 management:
-  metrics:
-    web:
-      server:
-        auto-time-requests: false
+#  metrics:
+#    web:
+#      server:
+#        auto-time-requests: false
   endpoints:
     web:
       exposure:
@@ -25,4 +43,10 @@ management:
   endpoint:
     health:
       show-details: always
-
+#  ###暂时禁用rabbit的健康检查
+  health:
+    rabbit:
+      enabled: false
+feign:
+  sentinel:
+    enabled: true

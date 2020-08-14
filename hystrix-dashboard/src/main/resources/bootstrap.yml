@@ -1,12 +1,27 @@
 spring:
   cloud:
     config:
-      uri: http://user:123456@127.0.0.1:8888/
+      uri: http://user:123456@192.168.5.4:8888/
       profile: dev
       label: master
   boot:
     admin:
       client:
-        url: http://49.4.23.228:7086
+        url: http://192.168.5.4:7086
         instance:
           prefer-ip: true
+          ##本服务的ip:port
+          #service-base-url: http://192.168.4.4:2222
+##admin监控配置
+management:
+  metrics:
+    web:
+      server:
+        auto-time-requests: false
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+  endpoint:
+    health:
+      show-details: always

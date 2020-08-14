@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.csbr.qingcloud.common.admin.cloud.mybatis.mapper.MfPlatformMapper">
+        <!-- 分页返回满足查询条件的平台资料信息 -->
+    <select id="mapperPageMfPlatforms" resultType="com.csbr.qingcloud.common.admin.cloud.mybatis.entity.MfPlatform">
+      <![CDATA[
+        SELECT
+          `guid` AS `guid`,
+          `platform_name` AS `platformName`,
+          `domain_name` AS `domainName`,
+          `platform_logo` AS `platformLogo`,
+          `domain_expiry_date` AS `domainExpiryDate`,
+          `domain_supplier` AS `domainSupplier`,
+          `server_attribute` AS `serverAttribute`,
+          `server_supplier` AS `serverSupplier`,
+          `server_expiry_date` AS `serverExpiryDate`,
+          `https_expiry_date` AS `httpsExpiryDate`,
+          `https_supplier` AS `httpsSupplier`,
+          `it_security_level` AS `itSecurityLevel`,
+          `it_security_ncb` AS `itSecurityNcb`,
+          `it_security_filing_org` AS `itSecurityFilingOrg`,
+          `it_security_picture` AS `itSecurityPicture`,
+          `is_deleted` AS `isDeleted`,
+          `create_user_id` AS `createUserId`,
+          `create_user_name` AS `createUserName`,
+          `update_user_id` AS `updateUserId`,
+          `update_user_name` AS `updateUserName`,
+          `create_time` AS `createTime`,
+          `update_time` AS `updateTime`
+        FROM `mf_platform`
+      ]]>
+      <include refid="searchConditions" />
+      <![CDATA[
+        ORDER BY `guid` DESC
+      ]]>
+    </select>
+    
+      <!-- 查询条件 -->
+    <sql id="searchConditions">
+      <where>
+        <if test="so.platformName != null and so.platformName != ''">
+          <![CDATA[ and `platform_name`=#{so.platformName} ]]>
+        </if>
+      </where>
+    </sql>
+
+
+    </mapper>

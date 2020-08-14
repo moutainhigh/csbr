@@ -4,6 +4,8 @@ VOLUME /tmp
 #COPY ${JAR_FILE} mscrm.jar
 #RUN bash -c 'touch /mscrm.jar'
 ADD target/config-server.jar config-server.jar
+# 指定容器内的时区
+RUN echo "Asia/Shanghai" > /etc/timezone
 ENV CE=$CE
 ENV JAVA_OPTS=$JAVA_OPTS
 EXPOSE 8888

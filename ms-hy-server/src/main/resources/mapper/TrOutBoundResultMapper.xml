@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.csbr.cloud.hy.server.mapper.TrOutBoundResultMapper">
+
+    <!--查询近3、7、14、30天的日均销量-->
+    <select id="getWmsDms" resultType  ="java.util.Map" parameterType="java.util.Map">
+        SELECT
+        COUNT(detail.qty) AS qty
+        FROM
+        tr_out_bound_result mian
+        LEFT JOIN tr_out_bound_result_detail detail ON mian.guid = detail.guid
+        WHERE 1 = 1
+        /*近3天*/
+        <if test="queryDay != null and queryDay != '' and queryDay = 3">
+            <![CDATA[
+            AND DATE_SUB( CURDATE( ), INTERVAL 3 DAY ) <= date( detail.create_time )
+            ]]>
+        </if>
+        /*近7天*/
+        <if test="queryDay != null and queryDay != '' and queryDay = 7">
+            <![CDATA[
+            AND DATE_SUB( CURDATE( ), INTERVAL 7 DAY ) <= date( detail.create_time )
+            ]]>
+        </if>
+        /*近14天*/
+        <if test="queryDay != null and queryDay != '' and queryDay = 14">
+            <![CDATA[
+            AND DATE_SUB( CURDATE( ), INTERVAL 14 DAY ) <= date( detail.create_time )
+            ]]>
+        </if>
+        /*近30天*/
+        <if test="queryDay != null and queryDay != '' and queryDay = 30">
+            <![CDATA[
+            AND DATE_SUB( CURDATE( ), INTERVAL 30 DAY ) <= date( detail.create_time )
+            ]]>
+        </if>
+        /*本月 当前时间*/
+        <if test="queryDay != null and queryDay != '' and queryDay = 0">
+            <![CDATA[
+            AND DATE_SUB( CURDATE( ), INTERVAL 0 DAY ) <= date( detail.create_time ) AND DATE_ADD(curdate(),interval -day(curdate())+1 day) >= date(detail.create_time)
+            ]]>
+        </if>
+        <if test="goodsGuid != null and goodsGuid != ''">
+            AND detail.goods_guid = #{goodsGuid}
+        </if>
+        <if test="warehouseGuid != null and warehouseGuid != ''">
+            AND main.warehouse_guid = #{warehouseGuid}
+        </if>
+    </select>
+
+</mapper>

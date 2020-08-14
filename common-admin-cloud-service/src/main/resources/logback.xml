@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <!-- 本地服务的名称 -->
+    <property name="app_name" value="ms-common-admin-cloud-service"/>
+
+    <!-- 包含 logback 的基础配置，路径就是所在包 -->
+    <include resource="com/csbr/cloud/common/logback/logback-base.xml"/>
+
+    <!-- 控制打印输出的内容 -->
+    <root level="INFO">
+        <appender-ref ref="FILE_ERROR"/>
+        <!--        <appender-ref ref="FILE_WARN"/>-->
+        <appender-ref ref="FILE_INFO"/>
+        <!-- 控制台 输出-->
+        <appender-ref ref="STDOUT"/>
+    </root>
+</configuration>

@@ -1,0 +1,93 @@
+spring:
+  application:
+    name: camunda-server
+#  cloud:
+#    inetutils:
+#      ignored-interfaces: docker0  # 让应用忽略docker0网卡
+  jersey:
+    application-path: /engine-rest
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    initialization-mode: never
+    url: jdbc:mysql://192.168.5.4:3306/camunda?useUnicode=true&characterEncoding=utf8&nullCatalogMeansCurrent=true&useSSL=false&useLegacyDatetimeCode=false&serverTimezone=UTC
+    username: root
+    password: root
+    tomcat:
+      max-idle: 10
+      max-wait: 10000
+      min-idle: 5
+      initial-size: 5
+      validation-query: SELECT 1
+      test-on-borrow: false
+      test-while-idle: true
+      time-between-eviction-runs-millis: 18800
+server:
+  port: 8090
+camunda:
+  bpm:
+    admin-user:
+      id: admin
+      password: admin
+      firstName: admin
+    filter:
+      create: All tasks
+    database:
+      type: mysql
+      schema-update: "true"
+    job-execution:
+      enabled: true
+    authorization:
+      enabled: false
+#    metrics:
+#      enabled: false
+#      db-reporter-activate: false
+# Seata
+seata:
+  enabled: true # 1.0新特性，需要依赖seata-spring-boot-starter,默认为true
+  tx-service-group: my_test_tx_group
+  application-id: camunda-server
+  #  enable-auto-data-source-proxy: true # 开启数据源自动代理
+  registry:
+    type: eureka
+    #    nacos:
+    #      application: seata-server
+    #      cluster: default
+    #      server-addr: 49.4.23.228:8848
+    #      #      password: nacos
+    #      #      username: nacos
+    #      namespace:
+    eureka:
+      application: camunda-server
+      weight: 1
+      service-url: http://192.168.5.4:8761/eureka
+#  config:
+#    type: file
+#    #    nacos:
+#    #      server-addr: 49.4.23.228:8848
+#    #      group: SEATA_GROUP
+#    #      namespace:
+#    file:
+#      name: file.conf
+  service:
+    vgroupMapping:
+      my_test_tx_group: seata-server
+    grouplist:
+      default: 192.168.4.4:8091
+eureka:
+  # 修改在服务中心的地址status为 ip+端口 【例如：10.0.0.100:88】
+  instance:
+    prefer-ip-address: true
+    #让eureka能点击进入到swagger
+    instance-id: ${spring.application.name}:${eureka.instance.non-secure-port}
+    #设置外网IP号
+#    ip-address: 192.168.5.4
+    #设置外网端口号
+    non-secure-port: 8090
+    ##踢出时间
+    leaseRenewalIntervalInSeconds: 10
+    health-check-url-path: /actuator/health
+  client:
+    registryFetchIntervalSeconds: 5
+    serviceUrl:
+      defaultZone: http://192.168.5.4:8761/eureka/
+#      defaultZone: http://192.168.2.122:8762/eureka/

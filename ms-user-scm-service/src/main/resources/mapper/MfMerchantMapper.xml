@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.csbr.qingcloud.user.scm.mybatis.mapper.MfMerchantMapper">
+        <!-- 分页返回满足查询条件的商户资料信息 -->
+    <select id="mapperPageMfMerchants" resultType="com.csbr.qingcloud.user.scm.mybatis.entity.MfMerchant">
+      <![CDATA[
+        SELECT
+          `abbreviation` AS `abbreviation`,
+          `address` AS `address`,
+          `approval_state` AS `approvalState`,
+          `begin_date` AS `beginDate`,
+          `biz_state` AS `bizState`,
+          `city` AS `city`,
+          `company_social_id` AS `companySocialId`,
+          `contact_tel` AS `contactTel`,
+          `create_time` AS `createTime`,
+          `create_user_id` AS `createUserId`,
+          `create_user_name` AS `createUserName`,
+          `date1` AS `date1`,
+          `date2` AS `date2`,
+          `date3` AS `date3`,
+          `district` AS `district`,
+          `end_date` AS `endDate`,
+          `enterprise_cate` AS `enterpriseCate`,
+          `guid` AS `guid`,
+          `id_code` AS `idCode`,
+          `id_pict_content` AS `idPictContent`,
+          `is_deleted` AS `isDeleted`,
+          `last_approval_time` AS `lastApprovalTime`,
+          `last_approver` AS `lastApprover`,
+          `last_approver_guid` AS `lastApproverGuid`,
+          `license_num` AS `licenseNum`,
+          `manager` AS `manager`,
+          `merchant_name` AS `merchantName`,
+          `num1` AS `num1`,
+          `num2` AS `num2`,
+          `num3` AS `num3`,
+          `pict_content` AS `pictContent`,
+          `is_free_man` AS `isFreeMan`,
+          `co_operatives_guid` AS `coOperativesGuid`,
+          `co_operatives_name` AS `coOperativesName`,
+          `proc_def_id` AS `procDefId`,
+          `task_id` AS `taskId`,
+          `province` AS `province`,
+          `reject_reason` AS `rejectReason`,
+          `sex` AS `sex`,
+          `update_time` AS `updateTime`,
+          `update_user_id` AS `updateUserId`,
+          `update_user_name` AS `updateUserName`,
+          `varchar1` AS `varchar1`,
+          `varchar2` AS `varchar2`,
+          `varchar3` AS `varchar3`,
+          `varchar4` AS `varchar4`,
+          `venue` AS `venue`
+        FROM `mf_merchant`
+      ]]>
+      <include refid="searchConditions" />
+      <![CDATA[
+        ORDER BY `guid` DESC
+      ]]>
+    </select>
+    
+      <!-- 查询条件 -->
+    <sql id="searchConditions">
+      <where>
+        <if test="so.idCode != null and so.idCode != ''">
+          <![CDATA[ and `id_code`=#{so.idCode} ]]>
+        </if>
+      </where>
+    </sql>
+
+    <!--注册审批查询-->
+    <select id="getRegisterPageList" resultType  ="java.util.List" parameterType="java.util.Map">
+        SELECT
+            merchant_name AS merchantName,
+            manager AS manager,
+            is_free_man AS isFreeMan,
+            co_operatives_guid AS coOperativesGuid,
+            co_operatives_name AS coOperativesName,
+            province AS province,
+            city AS city,
+            district AS district,
+            venue AS venue,
+            approval_state AS approvalState,
+            create_time AS createTime,
+            update_time AS updateTime
+        FROM
+            mf_merchant
+        WHERE 1=1
+        <if test="merchantName != null and merchantName != ''">
+            AND merchant_name = #{merchantName}
+        </if>
+        /*人员*/
+        <if test="manager != null and manager != ''">
+            AND manager = #{manager}
+        </if>
+        /*来源*/
+        <if test="isFreeMan != null and isFreeMan != ''">
+            AND is_free_man = #{isFreeMan}
+        </if>
+        <if test="province != null and province != ''">
+            AND province = #{province}
+        </if>
+        <if test="city != null and city != ''">
+            AND city = #{city}
+        </if>
+        <if test="district != null and district != ''">
+            AND district = #{district}
+        </if>
+        <if test="startTime != null and startTime != ''">
+            <![CDATA[
+            AND create_time >= str_to_date( #{startTime},'%Y-%m-%d %H:%i:%s')
+            ]]>
+        </if>
+        <if test="endTime != null and endTime != ''">
+            <![CDATA[
+            AND create_time < str_to_date( #{endTime},'%Y-%m-%d %H:%i:%s')
+            ]]>
+        </if>
+        /*状态*/
+        <if test="approvalState != null and approvalState != ''">
+            AND approval_state = #{approvalState}
+        </if>
+    </select>
+</mapper>

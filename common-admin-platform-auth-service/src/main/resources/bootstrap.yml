@@ -1,0 +1,61 @@
+spring:
+  application:
+    name: ms-common-admin-platform-auth-service
+  cloud:
+    nacos:
+      #配置中心
+      config:
+        server-addr: 192.168.5.4:8848
+        file-extension: yaml
+        group: dev
+      #注册中心
+    #      discovery:
+    #        server-addr: 192.168.5.4:8848
+    #        metadata:
+    #          user:
+    #            name: nacos
+    #            password: nacos
+    #          management:
+    #            context-path: /actuator
+    #接口限流
+    sentinel:
+      transport:
+        #        port: 7777
+        dashboard: 192.168.5.4:8858
+        #取消懒加载
+      eager: true
+
+  #      datasource:
+  #        ds:
+  #          nacos:
+  #            server-addr: 192.168.5.4:8848
+  #            data-id: ${spring.application.name}-sentinel
+  #            group-id: dev
+  #            rule-type: flow
+  boot:
+    admin:
+      client:
+        url: http://192.168.5.4:7086
+        instance:
+          prefer-ip: true
+management:
+  #  metrics:
+  #    web:
+  #      server:
+  #        auto-time-requests: false
+  endpoint:
+    health:
+      show-details: always
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+  ###暂时禁用rabbit的健康检查
+  health:
+    rabbit:
+      enabled: false
+    sentinel:
+      enabled: false
+feign:
+  sentinel:
+    enabled: true

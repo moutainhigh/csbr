@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.csbr.qingcloud.user.scm.mybatis.data.mapper.TrStaffSalesIndicatorMapper">
+        <!-- 分页返回满足查询条件的人员销售指标信息 -->
+    <select id="mapperPageTrStaffSalesIndicators" resultType="com.csbr.qingcloud.user.scm.mybatis.data.entity.TrStaffSalesIndicators">
+      <![CDATA[
+        SELECT
+          a.`create_time` AS `createTime`,
+          a.`create_user_id` AS `createUserId`,
+          a.`create_user_name` AS `createUserName`,
+          a.`end_date` AS `endDate`,
+          a.`organisation_guid` AS `organisationGuid`,
+          a.`guid` AS `guid`,
+          a.`is_deleted` AS `isDeleted`,
+          a.`job_number` AS `jobNumber`,
+          a.`name` AS `name`,
+          a.`position` AS `position`,
+          a.`remark` AS `remark`,
+          a.`total_sales_indicators` AS `totalSalesIndicators`,
+          a.`staff_guid` AS `staffGuid`,
+          a.`start_date` AS `startDate`,
+          a.`tenant_guid` AS `tenantGuid`,
+          a.`update_time` AS `updateTime`,
+          a.`update_user_id` AS `updateUserId`,
+          a.`update_user_name` AS `updateUserName`
+        FROM `tr_staff_sales_indicators` a
+      ]]>
+      <include refid="searchConditions" />
+      <![CDATA[
+        ORDER BY `guid` DESC
+      ]]>
+    </select>
+    
+      <!-- 查询条件 -->
+    <sql id="searchConditions">
+      <where>
+        <if test="so.goodsCode != null and so.goodsCode != ''">
+          <![CDATA[ and b.`goods_code`=#{so.goodsCode} ]]>
+        </if>
+        <if test="so.goodsGuid != null and so.goodsGuid != ''">
+          <![CDATA[ and b.`goods_guid`=#{so.goodsGuid} ]]>
+        </if>
+        <if test="so.tenantGuid != null and so.tenantGuid != ''">
+          <![CDATA[ and a.`tenant_guid`=#{so.tenantGuid} ]]>
+        </if>
+        <if test="so.goodsName != null and so.goodsName != ''">
+          <![CDATA[ and a.`goods_name`=#{so.goodsName} ]]>
+        </if>
+        <if test="so.name != null and so.name != ''">
+          <![CDATA[ and a.`name`=#{so.name} ]]>
+        </if>
+          <if test="so.date != null">
+              <![CDATA[ and a.`start_date`<=so.date
+                        and a.`end_date`>=so.date ]]>
+
+          </if>
+      </where>
+    </sql>
+
+    <select id="getStaffSalesIndicatorsWithDetail" resultType="com.csbr.qingcloud.user.scm.mybatis.data.mapper.pojo.StaffSalesIndicatorsWithDetailPOJO">
+        <![CDATA[
+        SELECT
+          a.`create_time` AS `createTime`,
+          a.`create_user_id` AS `createUserId`,
+          a.`create_user_name` AS `createUserName`,
+          a.`end_date` AS `endDate`,
+          a.`organisation_guid` AS `organisationGuid`,
+          a.`guid` AS `guid`,
+          a.`is_deleted` AS `isDeleted`,
+          a.`job_number` AS `jobNumber`,
+          a.`name` AS `name`,
+          a.`position` AS `position`,
+          a.`remark` AS `remark`,
+          a.`total_sales_indicators` AS `totalSalesIndicators`,
+          a.`staff_guid` AS `staffGuid`,
+          a.`start_date` AS `startDate`,
+          a.`tenant_guid` AS `tenantGuid`,
+          a.`update_time` AS `updateTime`,
+          a.`update_user_id` AS `updateUserId`,
+          a.`update_user_name` AS `updateUserName`,
+          b.`goods_guid` AS `goodsGuid`,
+          b.`goods_code` AS `goodsCode`,
+          b.`goods_name` AS `goodsName`,
+          b.`sales_indicators` AS `salesIndicators`
+
+        FROM `tr_staff_sales_indicators` a inner join `tr_staff_sales_indicators_detail` b on a.guid=b.staff_sales_indicators_guid
+      ]]>
+        <include refid="searchConditions" />
+        <![CDATA[
+        ORDER BY a.`start_date` DESC,a.`end_date` DESC
+      ]]>
+    </select>
+
+    <select id="getStaffWithIndicators" resultType="java.util.HashMap">
+        <![CDATA[
+        SELECT
+          a.`staff_guid` AS `staffGuid`,
+          sum(b.`sales_indicators`) AS `summarySalesIndicators`
+
+        FROM `tr_staff_sales_indicators` a inner join `tr_staff_sales_indicators_detail` b on a.guid=b.staff_sales_indicators_guid
+      ]]>
+        <include refid="searchConditions" />
+        <![CDATA[
+        group by a.`staff_guid`
+      ]]>
+    </select>
+
+    <select id="getGoodsNum" resultType="java.lang.Integer">
+        <![CDATA[
+        SELECT
+        count(DISTINCT(b.goods_guid)) as goodsNum
+
+        FROM `tr_staff_sales_indicators` a inner join `tr_staff_sales_indicators_detail` b on a.guid=b.staff_sales_indicators_guid
+      ]]>
+        <include refid="searchConditions" />
+
+    </select>
+    </mapper>

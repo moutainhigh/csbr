@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.csbr.cloud.flink.api.mybatis.medicine.mapper.MeMfvehicletypeMapper">
+    <!-- 分页返回满足查询条件的运输车辆类型信息 -->
+  <select id="searchMeMfvehicletypes" parameterType="com.csbr.cloud.flink.api.mybatis.medicine.mapper.so.MeMfvehicletypeSO" resultType="com.csbr.cloud.flink.api.mybatis.medicine.entity.MeMfvehicletype">
+    <![CDATA[
+      SELECT
+        `GUID` AS `guid`,
+        `TenantGuid` AS `tenantGuid`,
+        `CorpGuid` AS `corpGuid`,
+        `LogCenterGuid` AS `logCenterGuid`,
+        `CarrierGuid` AS `carrierGuid`,
+        `VehicleType` AS `vehicleType`,
+        `VehicleKind` AS `vehicleKind`,
+        `CarryingCapacity` AS `carryingCapacity`,
+        `Length` AS `length`,
+        `Width` AS `width`,
+        `Height` AS `height`,
+        `CarriageVolumn` AS `carriageVolumn`,
+        `VehicleSpec` AS `vehicleSpec`,
+        `LoadPKGNum` AS `loadPKGNum`,
+        `LoadPkgMaxRatio` AS `loadPkgMaxRatio`,
+        `TransCost` AS `transCost`,
+        `TransQuote` AS `transQuote`,
+        `SumWeight` AS `sumWeight`,
+        `CurbWeight` AS `curbWeight`,
+        `AxisNumber` AS `axisNumber`,
+        `Wheelbase` AS `wheelbase`,
+        `TyreNumber` AS `tyreNumber`,
+        `CREATE_TIME` AS `createTime`,
+        `UPDATE_TIME` AS `updateTime`,
+        `CreateUserId` AS `createUserId`,
+        `CreateUserName` AS `createUserName`,
+        `UpdateUserId` AS `updateUserId`,
+        `UpdateUserName` AS `updateUserName`,
+        `DataVersion` AS `dataVersion`,
+        `IsDeleted` AS `isDeleted`
+      FROM `mfvehicletype`
+    ]]>
+    <include refid="searchConditions" />
+    <![CDATA[
+      ORDER BY `GUID` DESC
+    ]]>
+  </select>
+
+  <!-- 查询条件 -->
+  <sql id="searchConditions">
+    <where>
+      <if test="guid!=null and guid!=''">
+        <![CDATA[ and `GUID`=#{guid} ]]>
+      </if>
+      <if test="vehicleKind!=null and vehicleKind!=''">
+        <![CDATA[ and `VehicleKind`=#{vehicleKind} ]]>
+      </if>
+    </where>
+  </sql>
+</mapper>

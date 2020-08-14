@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.csbr.qingcloud.user.scm.mybatis.data.mapper.MfCustomerMapper">
+        <!-- 分页返回满足查询条件的客户资料信息 -->
+    <select id="mapperPageMfCustomers" resultType="com.csbr.qingcloud.user.scm.mybatis.data.entity.MfCustomer">
+      <![CDATA[
+        SELECT
+          a.`address` AS `address`,
+          a.`affiliated_shop_num` AS `affiliatedShopNum`,
+          a.`city` AS `city`,
+          a.`create_time` AS `createTime`,
+          a.`create_user_id` AS `createUserId`,
+          a.`create_user_name` AS `createUserName`,
+          a.`customer_code` AS `customerCode`,
+          a.`customer_name` AS `customerName`,
+          a.`direct_stores_num` AS `directStoresNum`,
+          a.`district` AS `district`,
+          a.`guid` AS `guid`,
+          a.`is_deleted` AS `isDeleted`,
+          a.`province` AS `province`,
+          a.`staff_guid` AS `staffGuid`,
+          a.`tenant_guid` AS `tenantGuid`,
+          a.`terminal_property` AS `terminalProperty`,
+          a.`update_time` AS `updateTime`,
+          a.`update_user_id` AS `updateUserId`,
+          a.`update_user_name` AS `updateUserName`,
+          a.`venue` AS `venue`,
+          a.`contacts` AS `contacts`,
+          a.`contact_tel` AS `contactTel`,
+          a.`biz_state` AS `bizState`
+        FROM `mf_customer` a
+      ]]>
+      <include refid="searchConditions" />
+      <![CDATA[
+        ORDER BY `guid` DESC
+      ]]>
+    </select>
+    
+      <!-- 查询条件 -->
+    <sql id="searchConditions">
+      <where>
+          <if test="so.tenantGuid != null and so.tenantGuid != ''">
+              <![CDATA[ and a.`tenant_guid` = #{so.tenantGuid}]]>
+          </if>
+        <if test="so.customerName != null and so.customerName != ''">
+          <![CDATA[ and a.`customer_name` like  concat(#{so.customerName},'%') ]]>
+        </if>
+          <if test="so.customerCode != null and so.customerCode != ''">
+              <![CDATA[ and a.`customer_code` like  concat(#{so.customerCode},'%') ]]>
+          </if>
+      </where>
+    </sql>
+
+    <select id="getCustomersWithStaff" resultType="com.csbr.qingcloud.user.scm.mybatis.data.mapper.pojo.CustomerWithStaffPOJO">
+        <![CDATA[
+        SELECT
+          a.`address` AS `address`,
+          a.`affiliated_shop_num` AS `affiliatedShopNum`,
+          a.`city` AS `city`,
+          a.`create_time` AS `createTime`,
+          a.`create_user_name` AS `createUserName`,
+          a.`create_user_id` AS `createUserId`,
+          a.`customer_code` AS `customerCode`,
+          a.`customer_name` AS `customerName`,
+          a.`direct_stores_num` AS `directStoresNum`,
+          a.`district` AS `district`,
+          a.`guid` AS `guid`,
+          a.`is_deleted` AS `isDeleted`,
+          a.`province` AS `province`,
+          a.`staff_guid` AS `staffGuid`,
+          a.`tenant_guid` AS `tenantGuid`,
+          a.`terminal_property` AS `terminalProperty`,
+          a.`update_time` AS `updateTime`,
+          a.`update_user_id` AS `updateUserId`,
+          a.`update_user_name` AS `updateUserName`,
+          a.`venue` AS `venue`,
+          a.`contacts` AS `contacts`,
+          a.`contact_tel` AS `contactTel`,
+          b.`job_number` AS `jobNumber`,
+          b.`staff_name` AS `staffName`
+        FROM `mf_customer` a left join mf_staff b on a.staff_guid=b.guid
+      ]]>
+        <include refid="searchConditions" />
+        <![CDATA[
+        ORDER BY a.`create_time`
+      ]]>
+    </select>
+
+    </mapper>

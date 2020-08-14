@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.csbr.qingcloud.user.scm.mybatis.data.mapper.MfGoodsMapper">
+        <!-- 分页返回满足查询条件的商品资料信息 -->
+    <select id="mapperPageMfGoods" resultType="com.csbr.qingcloud.user.scm.mybatis.data.entity.MfGoods">
+      <![CDATA[
+        SELECT
+          `big_bcd` AS `bigBcd`,
+          `big_unit_qty` AS `bigUnitQty`,
+          `big_unit_style` AS `bigUnitStyle`,
+          `biz_state` AS `bizState`,
+          `brand` AS `brand`,
+          `chemical_name` AS `chemicalName`,
+          `create_time` AS `createTime`,
+          `create_user_id` AS `createUserId`,
+          `create_user_name` AS `createUserName`,
+          `date1` AS `date1`,
+          `date2` AS `date2`,
+          `date3` AS `date3`,
+          `dosage_form` AS `dosageForm`,
+          `generic_name` AS `genericName`,
+          `goods_code` AS `goodsCode`,
+          `goods_name` AS `goodsName`,
+          `goods_spec` AS `goodsSpec`,
+          `gross_weight` AS `grossWeight`,
+          `guid` AS `guid`,
+          `height` AS `height`,
+          `help_code` AS `helpCode`,
+          `is_deleted` AS `isDeleted`,
+          `length` AS `length`,
+          `lit_bcd` AS `litBcd`,
+          `middle_bcd` AS `middleBcd`,
+          `middle_unit_qty` AS `middleUnitQty`,
+          `middle_unit_style` AS `middleUnitStyle`,
+          `min_unit_qty` AS `minUnitQty`,
+          `min_unit_style` AS `minUnitStyle`,
+          `net_weight` AS `netWeight`,
+          `num1` AS `num1`,
+          `num2` AS `num2`,
+          `num3` AS `num3`,
+          `price` AS `price`,
+          `producer` AS `producer`,
+          `production_address` AS `productionAddress`,
+          `regist_key` AS `registKey`,
+          `remark` AS `remark`,
+          `tenant_guid` AS `tenantGuid`,
+          `unit_style` AS `unitStyle`,
+          `update_time` AS `updateTime`,
+          `update_user_id` AS `updateUserId`,
+          `update_user_name` AS `updateUserName`,
+          `varchar1` AS `varchar1`,
+          `varchar2` AS `varchar2`,
+          `varchar3` AS `varchar3`,
+          `varchar4` AS `varchar4`,
+          `width` AS `width`
+        FROM `mf_goods`
+      ]]>
+      <include refid="searchConditions" />
+      <![CDATA[
+        ORDER BY `guid` DESC
+      ]]>
+    </select>
+    
+      <!-- 查询条件 -->
+    <sql id="searchConditions">
+      <where>
+        <if test="so.goodsCode != null and so.goodsCode != ''">
+          <![CDATA[ and `goods_code`=#{so.goodsCode} ]]>
+        </if>
+        <if test="so.goodsName != null and so.goodsName != ''">
+          <![CDATA[ and `goods_name`=#{so.goodsName} ]]>
+        </if>
+      </where>
+    </sql>
+    </mapper>

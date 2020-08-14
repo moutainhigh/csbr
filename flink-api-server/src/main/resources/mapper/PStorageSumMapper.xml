@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.csbr.cloud.flink.api.mybatis.basedata.mapper.PStorageSumMapper">
+    <!-- 分页返回满足查询条件的信息 -->
+  <select id="searchPStorageSums" parameterType="com.csbr.cloud.flink.api.mybatis.basedata.mapper.so.PStorageSumSO" resultType="com.csbr.cloud.flink.api.mybatis.basedata.entity.PStorageSum">
+    <![CDATA[
+      SELECT
+        `chill_area` AS `chillArea`,
+        `city_count` AS `cityCount`,
+        `id` AS `id`,
+        `pro_count` AS `proCount`,
+        `shade_area` AS `shadeArea`,
+        `three_area` AS `threeArea`,
+        `three_gsp_count` AS `threeGspCount`,
+        `totle_area` AS `totleArea`,
+        `totle_gsp` AS `totleGsp`
+      FROM `p_storage_sum`
+    ]]>
+    <include refid="searchConditions" />
+    <![CDATA[
+      ORDER BY `id` DESC
+    ]]>
+  </select>
+
+  <!-- 查询条件 -->
+  <sql id="searchConditions">
+    <where>
+    </where>
+  </sql>
+
+  <select id="searchPStorageSum" parameterType="com.csbr.cloud.flink.api.mybatis.basedata.mapper.so.PStorageSumSO" resultType="com.csbr.cloud.flink.api.mybatis.basedata.entity.PStorageSum">
+    <![CDATA[
+      SELECT
+        `chill_area` AS `chillArea`,
+        `city_count` AS `cityCount`,
+        `id` AS `id`,
+        `pro_count` AS `proCount`,
+        `shade_area` AS `shadeArea`,
+        `three_area` AS `threeArea`,
+        `three_gsp_count` AS `threeGspCount`,
+        `totle_area` AS `totleArea`,
+        `totle_gsp` AS `totleGsp`
+      FROM `p_storage_sum`
+    ]]>
+    <include refid="searchConditions" />
+    <![CDATA[
+      ORDER BY `id` DESC
+      LIMIT 1
+    ]]>
+  </select>
+</mapper>

@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.csbr.qingcloud.common.admin.platform_auth.mybatis.mapper.MfDataPermissionMapper">
+        <!-- 分页返回满足查询条件的数据权限信息 -->
+    <select id="mapperPageMfDataPermissions" resultType="com.csbr.qingcloud.common.admin.platform_auth.mybatis.entity.MfDataPermission">
+      <![CDATA[
+        SELECT
+          `guid` AS `guid`,
+          `platform_guid` AS `platformGuid`,
+          `data_permission_name` AS `dataPermissionName`,
+          `data_permission_type` AS `dataPermissionType`,
+          `schema_name` AS `schemaName`,
+          `field` AS `field`,
+          `param_name` AS `paramName`,
+          `sql_script` AS `sqlScript`,
+          `create_time` AS `createTime`,
+          `update_time` AS `updateTime`
+        FROM `mf_data_permission`
+      ]]>
+      <include refid="searchConditions" />
+      <![CDATA[
+        ORDER BY `guid` DESC
+      ]]>
+    </select>
+    
+      <!-- 查询条件 -->
+    <sql id="searchConditions">
+      <where>
+        <if test="so.platformGuid != null and so.platformGuid != ''">
+          <![CDATA[ and `platform_guid`=#{so.platformGGuid} ]]>
+        </if>
+      </where>
+    </sql>
+
+    <select id="getDataPermissionsByRole" resultType="com.csbr.qingcloud.common.admin.platform_auth.mybatis.mapper.pojo.MfRoleDataPermissionPOJO"
+        parameterType="java.lang.String">
+        <![CDATA[
+          SELECT
+          a.`guid` AS `guid`,
+          a.`platform_guid` AS `platformGuid`,
+          a.`role_guid` AS `roleGuid`,
+          a.`data_permission_name` AS `dataPermissionName`,
+          a.`data_permission_type` AS `dataPermissionType`,
+          a.`schema_name` AS `schemaName`,
+          a.`field` AS `field`,
+          a.`param_name` AS `paramName`,
+          a.`sql_script` AS `sqlScript`,
+          b.`custom_data` AS `customData`,
+          a.`create_time` AS `createTime`,
+          a.`update_time` AS `updateTime`
+        FROM `mf_data_permission` a inner join `mf_role_data_permission` b on a.guid=b.data_permission_guid
+      ]]>
+        <where>
+            b.role_guid=#{roleGuid}
+        </where>
+        <![CDATA[
+        ORDER BY `create_time`
+      ]]>
+    </select>
+    </mapper>

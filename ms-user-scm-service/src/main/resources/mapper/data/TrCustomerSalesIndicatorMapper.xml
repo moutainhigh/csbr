@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.csbr.qingcloud.user.scm.mybatis.data.mapper.TrCustomerSalesIndicatorMapper">
+        <!-- 分页返回满足查询条件的客户销售指标信息 -->
+    <select id="mapperPageTrCustomerSalesIndicators" resultType="com.csbr.qingcloud.user.scm.mybatis.data.entity.TrCustomerSalesIndicators">
+      <![CDATA[
+        SELECT
+          `create_time` AS `createTime`,
+          `create_user_id` AS `createUserId`,
+          `create_user_name` AS `createUserName`,
+          `customer_code` AS `customerCode`,
+          `customer_guid` AS `customerGuid`,
+          `customer_name` AS `customerName`,
+          `end_date` AS `endDate`,
+          `guid` AS `guid`,
+          `is_deleted` AS `isDeleted`,
+           `organisation_guid` AS `organisationGuid`,
+          `job_number` AS `jobNumber`,
+          `name` AS `name`,
+          `position` AS `position`,
+          `remark` AS `remark`,
+          `total_sales_indicators` AS `totalSalesIndicators`,
+          `staff_guid` AS `staffGuid`,
+          `start_date` AS `startDate`,
+          `tenant_guid` AS `tenantGuid`,
+          `terminal_property` AS `terminalProperty`,
+          `update_time` AS `updateTime`,
+          `update_user_id` AS `updateUserId`,
+          `update_user_name` AS `updateUserName`
+        FROM `tr_customer_sales_indicators`
+      ]]>
+      <include refid="searchConditions" />
+      <![CDATA[
+        ORDER BY `guid` DESC
+      ]]>
+    </select>
+
+      <!-- 查询条件 -->
+    <sql id="searchConditions">
+      <where>
+        <if test="so.customerGuid != null and so.customerGuid != ''">
+          <![CDATA[ and `customer_guid`=#{so.customerGuid} ]]>
+        </if>
+        <if test="so.goodsGuid != null and so.goodsGuid != ''">
+          <![CDATA[ and `goods_guid`=#{so.goodsGuid} ]]>
+        </if>
+      </where>
+    </sql>
+    </mapper>

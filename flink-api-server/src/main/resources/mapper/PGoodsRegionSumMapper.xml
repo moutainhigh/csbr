@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.csbr.cloud.flink.api.mybatis.basedata.mapper.PGoodsRegionSumMapper">
+    <!-- 分页返回满足查询条件的信息 -->
+  <select id="searchPGoodsRegionSums" parameterType="com.csbr.cloud.flink.api.mybatis.basedata.mapper.so.PGoodsRegionSumSO" resultType="com.csbr.cloud.flink.api.mybatis.basedata.entity.PGoodsRegionSum">
+    <![CDATA[
+      SELECT
+        `city` AS `city`,
+        `district` AS `district`,
+        `goods_month` AS `goodsMonth`,
+        `goods_year` AS `goodsYear`,
+        `id` AS `id`,
+        `medicine_deliver_goods` AS `medicineDeliverGoods`,
+        `medicine_receiving_goods` AS `medicineReceivingGoods`,
+        `province` AS `province`,
+        `totle_deliver_goods` AS `totleDeliverGoods`,
+        `totle_receiving_goods` AS `totleReceivingGoods`
+      FROM `p_goods_region_sum`
+    ]]>
+    <include refid="searchConditions" />
+    <![CDATA[
+      ORDER BY `id` DESC
+    ]]>
+  </select>
+
+  <!-- 查询条件 -->
+  <sql id="searchConditions">
+    <where>
+    </where>
+  </sql>
+
+  <select id="searchPGoodsRegionSum" parameterType="com.csbr.cloud.flink.api.mybatis.basedata.mapper.so.PGoodsRegionSumSO" resultType="com.csbr.cloud.flink.api.mybatis.basedata.entity.PGoodsRegionSum">
+    <![CDATA[
+      SELECT
+        `city` AS `city`,
+        `district` AS `district`,
+        `goods_month` AS `goodsMonth`,
+        `goods_year` AS `goodsYear`,
+        `id` AS `id`,
+        `medicine_deliver_goods` AS `medicineDeliverGoods`,
+        `medicine_receiving_goods` AS `medicineReceivingGoods`,
+        `province` AS `province`,
+        `totle_deliver_goods` AS `totleDeliverGoods`,
+        `totle_receiving_goods` AS `totleReceivingGoods`
+      FROM `p_goods_region_sum`
+    ]]>
+    <include refid="searchConditions" />
+    <![CDATA[
+      ORDER BY `id` DESC
+      LIMIT 1
+    ]]>
+  </select>
+</mapper>

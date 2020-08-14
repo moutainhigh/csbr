@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.csbr.cloud.flink.api.mybatis.basedata.mapper.CusStorageSumMapper">
+    <!-- 分页返回满足查询条件的信息 -->
+  <select id="searchCusStorageSums" parameterType="com.csbr.cloud.flink.api.mybatis.basedata.mapper.so.CusStorageSumSO" resultType="com.csbr.cloud.flink.api.mybatis.basedata.entity.CusStorageSum">
+    <![CDATA[
+      SELECT
+        `create_time` AS `createTime`,
+        `guid` AS `guid`,
+        `id` AS `id`,
+        `three_area` AS `threeArea`,
+        `three_gsp_count` AS `threeGspCount`,
+        `totle_area` AS `totleArea`,
+        `totle_gsp` AS `totleGsp`,
+        `update_time` AS `updateTime`
+      FROM `cus_storage_sum`
+    ]]>
+    <include refid="searchConditions" />
+    <![CDATA[
+      ORDER BY `id` DESC
+    ]]>
+  </select>
+
+  <!-- 查询条件 -->
+  <sql id="searchConditions">
+    <where>
+    </where>
+  </sql>
+
+  <select id="searchCusStorageSum" parameterType="com.csbr.cloud.flink.api.mybatis.basedata.mapper.so.CusStorageSumSO" resultType="com.csbr.cloud.flink.api.mybatis.basedata.entity.CusStorageSum">
+    <![CDATA[
+      SELECT
+        `create_time` AS `createTime`,
+        `guid` AS `guid`,
+        `id` AS `id`,
+        `three_area` AS `threeArea`,
+        `three_gsp_count` AS `threeGspCount`,
+        `totle_area` AS `totleArea`,
+        `totle_gsp` AS `totleGsp`,
+        `update_time` AS `updateTime`
+      FROM `cus_storage_sum`
+    ]]>
+    <include refid="searchConditions" />
+    <![CDATA[
+      ORDER BY `id` DESC
+      LIMIT 1
+    ]]>
+  </select>
+
+  <select id="searchWarehouseDetails" resultType="com.csbr.cloud.flink.api.mybatis.basedata.model.WarehouseDetailsDTO">
+    <![CDATA[
+      SELECT
+          b.address,
+          SUM(a.totle_area + a.three_area) AS area,
+          b.chinese_name AS chineseName,
+          b.guid,
+          SUM(a.totle_gsp + a.three_gsp_count) AS num,
+          b.province
+      FROM cus_storage_sum a
+      INNER JOIN mf_customer_info b ON a.guid = b.guid
+      GROUP BY a.guid
+    ]]>
+  </select>
+</mapper>

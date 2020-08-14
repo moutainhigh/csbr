@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.csbr.cloud.hy.server.mapper.TrPlanSalesMapper">
+    
+    <select id="getSalesAccuracy" resultType  ="java.util.Map" parameterType="java.util.Map">
+        SELECT
+         tps.tenant_guid AS tenantGuid,
+         tps.log_area_guid AS logAreaGuid,
+         tps.ware_house_guid AS wareHouseGuid,
+         tps.dept_guid AS deptGuid,
+         tps.dept_name AS deptName,
+         tps.plan_year AS planYear,
+         tps.status AS status,
+         tps.apply_source AS applySource,
+         tpsd.goods_guid AS goodsGuid,
+         tpsd.goods_code AS goodsCode,
+         tpsd.goods_name AS goodsName,
+         tpsd.goods_spec AS goodsSpec,
+         tpsd.unit AS unit,
+         tpsd.unit_qty AS unitQty,
+         tpsd.price AS price,
+         tpsd.total_calculate AS totalCalculate,
+         tpsd.jan AS jan,
+         tpsd.feb AS feb,
+         tpsd.mar AS mar,
+         tpsd.apr AS apr,
+         tpsd.may AS may,
+         tpsd.jun AS jun,
+         tpsd.jul AS jul,
+         tpsd.aug AS aug,
+         tpsd.sept AS sept,
+         tpsd.oct AS oct,
+         tpsd.nov AS nov,
+         tpsd.dec AS 'dec'
+        FROM
+            tr_plan_sales tps
+            LEFT JOIN tr_plan_sales_detail tpsd ON tps.guid = tpsd.plan_sales_guid
+        WHERE 1=1
+        <if test="guid != null and guid != ''">
+            AND tps.guid = #{guid}
+        </if>
+        <if test="wareHouseGuid != null and wareHouseGuid != ''">
+            AND tps.ware_house_guid = #{wareHouseGuid}
+        </if>
+        <if test="goodsGuid != null and goodsGuid != ''">
+            AND tpsd.goods_guid = #{goodsGuid}
+        </if>
+        <if test="planYear != null and planYear != ''">
+            AND tps.plan_year = #{planYear}
+        </if>
+
+    </select>
+
+</mapper>

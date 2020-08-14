@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.csbr.cloud.flink.api.mybatis.medicine.mapper.MfmasterdataMapper">
+    <!-- 分页返回满足查询条件的主数据资料信息 -->
+  <select id="searchMfmasterdatas" parameterType="com.csbr.cloud.flink.api.mybatis.medicine.mapper.so.MfmasterdataSO" resultType="com.csbr.cloud.flink.api.mybatis.medicine.entity.Mfmasterdata">
+    <![CDATA[
+      SELECT
+        `GUID` AS `guid`,
+        `ChineseName` AS `chineseName`,
+        `EnterpriseType` AS `enterpriseType`,
+        `EnterpriseClass` AS `enterpriseClass`,
+        `BizRange` AS `bizRange`,
+        `Province` AS `province`,
+        `City` AS `city`,
+        `District` AS `district`,
+        `Address` AS `address`,
+        `RegisteredDate` AS `registeredDate`,
+        `OORange` AS `oORange`,
+        `Contacts` AS `contacts`,
+        `ContactTel` AS `contactTel`,
+        `CREATE_TIME` AS `createTime`,
+        `MasterGuid` AS `masterGuid`,
+        `MasTerGuidTemp` AS `masTerGuidTemp`,
+        `MedOrgType` AS `medOrgType`,
+        `MedOrgRank` AS `medOrgRank`,
+        `MedOrgGrade` AS `medOrgGrade`,
+        `CarSumCount` AS `carSumCount`,
+        `CarColdCount` AS `carColdCount`,
+        `OutletsCount` AS `outletsCount`,
+        `DistribeCenterCount` AS `distribeCenterCount`,
+        `CarAvailableCount` AS `carAvailableCount`,
+        `UPDATE_TIME` AS `updateTime`,
+        `CreateUserID` AS `createUserID`,
+        `CreateUserName` AS `createUserName`,
+        `UpdateUserID` AS `updateUserID`,
+        `UpdateUserName` AS `updateUserName`,
+        `DataVersion` AS `dataVersion`,
+        `IsDeleted` AS `isDeleted`,
+        `TableSource` AS `tableSource`
+      FROM `mfmasterdata`
+    ]]>
+    <include refid="searchConditions" />
+    <![CDATA[
+      ORDER BY `GUID` DESC
+    ]]>
+  </select>
+
+  <!-- 查询条件 -->
+  <sql id="searchConditions">
+    <where>
+    </where>
+  </sql>
+</mapper>

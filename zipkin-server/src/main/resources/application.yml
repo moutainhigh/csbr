@@ -1,8 +1,12 @@
 server:
   port: 9411
+#  compression:
+#    enabled: true
 spring:
   application:
     name: zipkin-server
+#  main:
+#    web-application-type: none
 #  rabbitmq:
 #    host: 10.2.159.70
 #    port: 5672
@@ -10,6 +14,22 @@ spring:
 #    password: guest
 #    virtual-host: /
 
+zipkin:
+  storage:
+    type: elasticsearch
+    elasticsearch:
+      hosts: http://139.9.190.186:9200
+      #      username: elastic
+      #      password: changeme
+      cluster: elasticsearch
+#      index: zipkin
+#      index-shards: 1
+#      index-replicas: 1
+  collector:
+    kafka:
+      bootstrap-servers: 139.9.190.186:9092
+      zookeeper: 139.9.190.186:2181
+      topic: zipkin
 eureka:
   # 修改在服务中心的地址status为 ip+端口 【例如：10.0.0.100:88】
   instance:

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.csbr.cloud.hy.server.mapper.TrDeliveryTimeoutOrderMapper">
+
+    <!--每日提货超时统计-->
+    <select id="trDeliveryTimeoutOrderJob" resultType  ="java.util.Map" parameterType="java.util.Map">
+        SELECT
+        COUNT(1) AS totleDeliveryTimeout,
+		tenant_guid AS tenantGuid,
+		corp_guid AS corpGuid,
+        deliver_guid AS deliverGuid,
+        deliver_name AS deliverName,
+        cargo_owner_guid AS cargoOwnerGuid,
+        cargo_owner_name AS cargoOwnerName
+        FROM
+        tr_delivery_timeout_order
+        WHERE 1=1
+        AND create_time = date_sub(curdate(),interval 1 day)
+        GROUP BY cargo_owner_guid,cargo_owner_name,deliver_guid,deliver_name;
+    </select>
+
+</mapper>
